@@ -183,6 +183,25 @@ def _axes(d):
     return lats, lons
 
 
+def mongo_live(db):
+    d = _mdb(db)
+    ss = d.client.admin.command("serverStatus")
+    oc, st = ss.get("opcounters", {}), d.command("dbStats")
+    cols = []
+    for n in sorted(d.list_collection_names()):
+        try:
+            cs = next(d[n].aggregate([{"$collStats": {"storageStats": {}}}]), {}).get("storageStats", {})
+        except Exception:
+            cs = {}
+        cols.append({"name": n, "count": cs.get("count", 0), "size": cs.get("size", 0),
+                     "storageSize": cs.get("storageSize", 0), "totalIndexSize": cs.get("totalIndexSize", 0),
+                     "indexes": [{"name": k, "size": v} for k, v in (cs.get("indexSizes") or {}).items()]})
+    return {"t": time.time(), "db": db, "opcounters": {k: oc.get(k, 0) for k in ("insert", "query", "command")},
+            "connections": ss.get("connections", {}).get("current"),
+            "dbStats": {k: st.get(k) for k in ("collections", "objects", "dataSize", "storageSize", "indexSize")},
+            "colls": cols}
+
+
 def viz(path, q, db):
     import datetime
     d = _mdb(db)
@@ -288,6 +307,11 @@ class H(BaseHTTPRequestHandler):
                 ct = {"png": "image/png", "csv": "text/csv", "json": "application/json"}[p.suffix[1:]]
                 return self._send(200, p.read_bytes(), ct)
             return self._send(404, "no existe", "text/plain")
+        if u.path == "/api/mongo/live":
+            try:
+                return self._send(200, json.dumps(mongo_live(clean_db(q.get("db")))))
+            except Exception as e:
+                return self._send(500, json.dumps({"error": str(e)}))
         if u.path.startswith("/api/viz/"):
             try:
                 r = viz(u.path, q, clean_db(q.get("db")))
@@ -374,6 +398,12 @@ table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}th,td{bo
 .verdict{font-size:22px;font-weight:700;padding:10px 14px;border-radius:10px;display:inline-block}.verdict.ok{background:#dafbe1;color:var(--ok)}.verdict.bad{background:#ffebe9;color:var(--bad)}
 .side h3{margin:0 0 8px;font-size:14px}.side table td{padding:3px 4px}.note{font-size:12px;color:var(--mut)}
 [hidden]{display:none!important}
+.cols{grid-template-columns:1fr 320px}.side{position:sticky;top:10px;max-height:calc(100vh - 20px);overflow:auto}
+.ml{border-top:1px solid var(--line);margin-top:12px;padding-top:10px}.mlb{margin:8px 0 10px}.mlb>p.note{margin:4px 0 0}
+#ml_cv{display:block;width:100%;height:60px;background:#f6f8fa;border:1px solid var(--line);border-radius:6px;margin-top:4px}
+.mlr{display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:12px;padding:2px 4px;border-radius:4px}.mlr .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar0{grid-column:1/3;height:6px;background:#eef1f5;border-radius:3px;overflow:hidden}.bar0 i{display:block;height:100%;width:0;background:var(--ac);transition:width .8s ease}
+.bar0.ix i{background:#8250df}@keyframes chg{from{background:#fff3a0}to{background:transparent}}.chg{animation:chg 1s ease-out}
 .tabs{display:flex;gap:6px;margin-bottom:12px}.tab{font-weight:600;cursor:pointer}.tab.on{background:#14213d;color:#fff;border-color:#14213d}
 .rgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:900px){.rgrid{grid-template-columns:1fr}}
 .map{display:block;width:100%;max-width:399px;image-rendering:pixelated;cursor:crosshair;border:1px solid var(--line);margin-top:8px}
@@ -397,7 +427,18 @@ input[type=range]{vertical-align:middle}
 </div>
 <div class="cols"><div id="steps"></div>
  <aside class="side card"><h3>Estado de la base de datos</h3><div id="dbstate" class="note">…</div>
- <p class="note" style="margin-top:12px">Con pocos días las anomalías son poco informativas: usa 744 h para ver el resultado completo.</p></aside></div>
+ <p class="note" style="margin-top:12px">Con pocos días las anomalías son poco informativas: usa 744 h para ver el resultado completo.</p>
+ <div class="ml"><h3>MongoDB en vivo <span id="ml_st" class="note"></span></h3>
+  <div class="mlb"><div id="ml_ipsr"><b id="ml_ips" style="font-size:20px">—</b> inserts/s <span class="note">· conexiones <b id="ml_con">—</b></span></div>
+   <canvas id="ml_cv" width="300" height="60"></canvas>
+   <p class="note"><b>Qué estás viendo:</b> documentos insertados por segundo en el servidor (diferencia de <code>serverStatus.opcounters.insert</code> entre dos lecturas), últimos 60 s.</p></div>
+  <div class="mlb"><div id="ml_cols"></div>
+   <p class="note"><b>Qué estás viendo:</b> documentos de cada colección de la base elegida (<code>$collStats.storageStats.count</code>).</p></div>
+  <div class="mlb"><div id="ml_obj" class="note"></div><div id="ml_sz"></div>
+   <p class="note"><b>Qué estás viendo:</b> tamaño de los datos (BSON sin comprimir) frente a los índices y al espacio en disco (<code>dbStats</code>).</p></div>
+  <div class="mlb"><div id="ml_idx"></div>
+   <p class="note"><b>Qué estás viendo:</b> cada índice (B-tree o 2dsphere) y cuánto ocupa (<code>storageStats.indexSizes</code>).</p></div>
+  <button id="ml_compass">Abrir en Compass</button> <span id="ml_cp" class="note"></span></div></aside></div>
 <div id="final"></div>
 </div>
 <div id="v_res" hidden>
@@ -438,7 +479,7 @@ function build(){$('#steps').innerHTML=STEPS.map(s=>`<div class="card" id="s_${s
  <div class="ahora" id="a_${s.id}"></div><div class="term" id="t_${s.id}"></div><div class="res" id="x_${s.id}"></div></div>`).join('');
  STEPS.forEach(s=>$('#r_'+s.id).onclick=()=>runStep(s.id))}
 function setBadge(id,cls,txt){const b=$('#b_'+id);b.className='badge '+cls;b.textContent=txt}
-function setBusy(v){busy=v;document.querySelectorAll('button.go').forEach(b=>b.disabled=v)}
+function setBusy(v){busy=v;document.querySelectorAll('button.go').forEach(b=>b.disabled=v);if(window.mlKick)mlKick()}
 function runStep(id){return new Promise(res=>{if(busy){res(false);return}
  if(id==='ingesta'&&db()==='era5_climate_db'&&!confirm('Esto BORRARÁ y recargará la base PRINCIPAL del informe (era5_climate_db). ¿Seguro?')){res(false);return}
  setBusy(true);const t=$('#t_'+id),a=$('#a_'+id);t.style.display='block';t.innerHTML='';a.style.display='block';a.textContent='Iniciando…';$('#x_'+id).innerHTML='';
@@ -555,6 +596,36 @@ async function loadRes(force){const d=db();if(!force&&V.db===d&&V.T)return;stop(
 $('#reload').onclick=()=>loadRes(true);
 $('#db').addEventListener('change',()=>{if(!$('#v_res').hidden)loadRes()});
 legend($('#lg_a'),divz,-4,4,'z');
+// ===== MongoDB en vivo =====
+const ML={prev:null,hist:[],timer:null,inflight:false,db:null};
+const MB=n=>n==null?'—':(n/1048576).toFixed(n<10485760?2:1)+' MB';
+function hl(el){el.classList.remove('chg');void el.offsetWidth;el.classList.add('chg')}
+function setT(el,t){if(el.textContent!==t){const had=el.textContent!==''&&el.textContent!=='—';el.textContent=t;if(had)hl(el.closest('.mlr')||el)}}
+function mlRows(box,items,cls){const keys=items.map(i=>i.k).join('|');
+ if(box.dataset.keys!==keys){box.dataset.keys=keys;box.innerHTML=items.length?items.map(i=>`<div class="mlr"><span class="n" title="${esc(i.k)}">${esc(i.label)}</span><b class="v"></b><div class="bar0 ${cls||''}"><i></i></div></div>`).join(''):'<span class="note">sin colecciones</span>'}
+ items.forEach((it,n)=>{const r=box.children[n];setT(r.querySelector('.v'),it.val);r.querySelector('i').style.width=Math.max(0,Math.min(100,it.pct))+'%'})}
+function mlChart(){const cv=$('#ml_cv'),x=cv.getContext('2d'),W=cv.width,H=cv.height,now=Date.now()/1000;x.clearRect(0,0,W,H);
+ const h=ML.hist.filter(p=>p.t>=now-60);if(!h.length)return;const mx=Math.max(1,...h.map(p=>p.v)),X=t=>(t-(now-60))/60*W,Y=v=>H-3-v/mx*(H-14);
+ x.beginPath();x.moveTo(X(h[0].t),H);h.forEach(p=>x.lineTo(X(p.t),Y(p.v)));x.lineTo(X(h[h.length-1].t),H);x.closePath();x.fillStyle='rgba(31,111,235,.18)';x.fill();
+ x.beginPath();h.forEach((p,k)=>k?x.lineTo(X(p.t),Y(p.v)):x.moveTo(X(p.t),Y(p.v)));x.strokeStyle='#1f6feb';x.lineWidth=1.5;x.stroke();
+ x.fillStyle='#667085';x.font='10px system-ui,sans-serif';x.fillText('máx '+fmt(Math.round(mx))+'/s',4,10);x.textAlign='right';x.fillText('−60 s … ahora',W-4,10);x.textAlign='left'}
+function mlDraw(r){if(ML.db!==r.db){ML.db=r.db;['#ml_cols','#ml_sz','#ml_idx'].forEach(s=>{$(s).dataset.keys='';$(s).innerHTML=''})}
+ const oc=r.opcounters;if(ML.prev){const dt=r.t-ML.prev.t,di=oc.insert-ML.prev.oc.insert;const v=dt>0&&di>=0?di/dt:0;ML.hist.push({t:r.t,v});setT($('#ml_ips'),fmt(Math.round(v)))}
+ ML.prev={t:r.t,oc};ML.hist=ML.hist.filter(p=>p.t>=r.t-60);mlChart();setT($('#ml_con'),String(r.connections??'—'));
+ const mc=Math.max(1,...r.colls.map(c=>c.count));mlRows($('#ml_cols'),r.colls.map(c=>({k:c.name,label:c.name,val:fmt(c.count)+' docs · '+MB(c.size),pct:c.count/mc*100})));
+ const s=r.dbStats,ms=Math.max(1,s.dataSize||0,s.indexSize||0,s.storageSize||0);setT($('#ml_obj'),`${esc(r.db)}: ${fmt(s.collections)} colecciones · ${fmt(s.objects)} objetos`);
+ mlRows($('#ml_sz'),[{k:'d',label:'Datos (dataSize)',val:MB(s.dataSize),pct:s.dataSize/ms*100},{k:'i',label:'Índices (indexSize)',val:MB(s.indexSize),pct:s.indexSize/ms*100},{k:'s',label:'En disco (storageSize)',val:MB(s.storageSize),pct:s.storageSize/ms*100}]);
+ const ix=r.colls.flatMap(c=>c.indexes.map(i=>({k:c.name+'.'+i.name,label:i.name+' · '+c.name,size:i.size}))),mi=Math.max(1,...ix.map(i=>i.size));
+ mlRows($('#ml_idx'),ix.map(i=>({k:i.k,label:i.label,val:MB(i.size),pct:i.size/mi*100})),'ix')}
+async function mlTick(){clearTimeout(ML.timer);if(!ML.inflight&&!$('#v_pasos').hidden){ML.inflight=true;
+ try{mlDraw(await J('/api/mongo/live?db='+encodeURIComponent(db())));$('#ml_st').textContent=busy?'· cada 1 s':'· cada 5 s'}
+ catch(e){$('#ml_st').textContent='· error: '+e.message}ML.inflight=false}ML.timer=setTimeout(mlTick,busy?1000:5000)}
+window.mlKick=()=>mlTick();
+$('#db').addEventListener('change',()=>mlTick());$('#tb_pasos').addEventListener('click',()=>mlTick());
+$('#ml_compass').onclick=async()=>{const u='mongodb://localhost:27017';let ok=false;try{await navigator.clipboard.writeText(u);ok=true}catch(e){
+ const t=document.createElement('textarea');t.value=u;document.body.appendChild(t);t.select();try{ok=document.execCommand('copy')}catch(_){}t.remove()}
+ $('#ml_cp').textContent=ok?'copiado: pégalo en Compass → New connection':'copia a mano: '+u};
+mlTick();
 fetch('/api/steps').then(r=>r.json()).then(s=>{STEPS=s;build();refresh()});
 </script></body></html>"""
 
