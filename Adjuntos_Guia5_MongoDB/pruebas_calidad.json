@@ -1,0 +1,72 @@
+[
+  {
+    "_id": "Q-001",
+    "producto": "Mouse",
+    "ciudad": "Arequipa",
+    "cantidad": 1,
+    "precio": 40
+  },
+  {
+    "_id": "Q-002",
+    "producto": "Mouse",
+    "ciudad": "Arequipa",
+    "cantidad": 2,
+    "precio": 40
+  },
+  {
+    "_id": "Q-003",
+    "producto": "Mouse",
+    "ciudad": "Arequipa",
+    "cantidad": 3,
+    "precio": 40
+  },
+  {
+    "_id": "Q-004",
+    "producto": "Mouse",
+    "ciudad": "Arequipa",
+    "cantidad": 4,
+    "precio": 40
+  },
+  {
+    "_id": "Q-005",
+    "producto": "Mouse",
+    "ciudad": "Arequipa",
+    "cantidad": 5,
+    "precio": 40
+  },
+  {
+    "_id": "Q-006",
+    "producto": "Mouse",
+    "ciudad": "Arequipa",
+    "cantidad": 6,
+    "precio": 40
+  },
+  {
+    "_id": "Q-007",
+    "producto": "Mouse",
+    "ciudad": "Arequipa",
+    "cantidad": -2,
+    "precio": 40
+  },
+  {
+    "_id": "Q-008",
+    "producto": "Mouse",
+    "ciudad": "Arequipa",
+    "cantidad": 8,
+    "precio": "40"
+  },
+  {
+    "_id": "Q-009",
+    "producto": "Mouse",
+    "ciudad": "",
+    "cantidad": 9,
+    "precio": 40
+  },
+  {
+    "_id": "Q-010",
+    "producto": "Mouse",
+    "ciudad": "Arequipa",
+    "cantidad": true,
+    "precio": 40
+  }
+]

@@ -1,0 +1,209 @@
+\documentclass[12pt,a4paper]{article}
+
+% ==============================================================================
+% PAQUETES BÁSICOS Y CODIFICACIÓN
+% ==============================================================================
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla,es-noquoting]{babel}
+
+% Márgenes idénticos al documento Word original (2.3 cm laterales, 2.0 cm sup/inf)
+\usepackage[a4paper, left=2.3cm, right=2.3cm, top=2.0cm, bottom=2.0cm]{geometry}
+
+% Fuente Calibri idéntica a Word mediante la tipografía Carlito
+\usepackage{carlito}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Paquetes para tablas, gráficos y diseño
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}
+
+% Rutas de búsqueda de imágenes (soporta carpeta img/ o directorio actual)
+\graphicspath{{img/}{logos/}{./}}
+
+% ==============================================================================
+% CONFIGURACIÓN DE CÓDIGO FUENTE (Para prácticas de Big Data / Programación)
+% ==============================================================================
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.45,0.45,0.45}
+\definecolor{codepurple}{rgb}{0.55,0,0.8}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+
+\lstdefinestyle{estilocodigo}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=6pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{codegray!40}
+}
+\lstset{style=estilocodigo}
+
+% ==============================================================================
+% DEFINICIÓN DE MACROS Y FORMATO DE ENCABEZADOS << SECCIÓN >>
+% ==============================================================================
+% Símbolos de llaves dobles exactas sin activar ligaduras ni shorthands
+\newcommand{\llav}{\symbol{60}\symbol{60}}
+\newcommand{\rlav}{\symbol{62}\symbol{62}}
+\newcommand{\marcador}[1]{\llav\ #1\ \rlav}
+\newcommand{\marcadornospace}[1]{\llav#1\rlav}
+
+% Comando de sección al estilo exacto del Word original
+\newcommand{\seccion}[1]{%
+  \vspace{0.75cm}%
+  {\centering\bfseries\fontsize{12pt}{14pt}\selectfont\marcador{\MakeUppercase{#1}}\par}%
+  \vspace{0.35cm}%
+}
+
+% Comando de sección de referencias sin espacio interior (como en el Word original)
+\newcommand{\seccionref}{%
+  \vspace{0.75cm}%
+  {\centering\bfseries\fontsize{12pt}{14pt}\selectfont\marcadornospace{REFERENCIAS}\par}%
+  \vspace{0.35cm}%
+}
+
+% Compatibilidad con \section estándar
+\makeatletter
+\renewcommand{\section}{\@ifstar\mi@section@star\mi@section@nostar}
+\newcommand{\mi@section@nostar}[1]{\seccion{#1}}
+\newcommand{\mi@section@star}[1]{\seccion{#1}}
+\makeatother
+
+% ==============================================================================
+% CONFIGURACIÓN DE BIBLIOGRAFÍA (Soporta .bib y thebibliography estándar)
+% ==============================================================================
+\makeatletter
+\renewenvironment{thebibliography}[1]{%
+  \seccionref
+  \list{\@biblabel{\@arabic\c@enumiv}}%
+       {\settowidth\labelwidth{\@biblabel{#1}}%
+        \leftmargin\labelwidth
+        \advance\leftmargin\labelsep
+        \@openbib@code
+        \usecounter{enumiv}%
+        \let\p@enumiv\@empty
+        \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+  \sloppy
+  \clubpenalty4000
+  \@clubpenalty \clubpenalty
+  \widowpenalty4000%
+  \sfcode`\.\@m}
+  {\def\@noitemerr
+    {\@latex@warning{Empty `thebibliography' environment}}%
+  \endlist}
+\makeatother
+
+% ==============================================================================
+% DATOS DEL TRABAJO / ASIGNATURA / ESTUDIANTE
+% (Modificar estos campos según cada práctica)
+% ==============================================================================
+\newcommand{\NombreAsignatura}{<< NOMBRE DE ASIGNATURA >>}
+\newcommand{\NombreTrabajo}{<< NOMBRE TRABAJO >>}
+\newcommand{\CodigoEstudiante}{2022246951}
+\newcommand{\ApellidosNombresEstudiante}{Medina Delgado Italo Gabriel}
+\newcommand{\FechaEntrega}{} % Dejar vacío si se llena a mano o escribir fecha
+
+% ==============================================================================
+% INICIO DEL DOCUMENTO
+% ==============================================================================
+\begin{document}
+\pagestyle{plain}
+
+% ------------------------------------------------------------------------------
+% 1. ENCABEZADO INSTITUCIONAL CON LOGOS (UCSM y EPIS)
+% ------------------------------------------------------------------------------
+\noindent\makebox[\textwidth][c]{%
+  \begin{tabular}{@{} m{3.0cm} @{\hspace{0.25cm}} m{11.8cm} @{\hspace{0.25cm}} m{2.4cm} @{}}
+    \centering\includegraphics[height=3cm, keepaspectratio]{logo_ucsm.png} &
+    \centering
+    {\fontsize{15pt}{18pt}\selectfont\bfseries UNIVERSIDAD CATÓLICA DE SANTA MARÍA}\par\vspace{2.5pt}
+    \rule{11.6cm}{0.5pt}\par\vspace{3.5pt}
+    {\fontsize{13pt}{16pt}\selectfont\bfseries ESCUELA PROFESIONAL DE INGENIERÍA DE SISTEMAS} &
+    \centering\includegraphics[height=3cm, keepaspectratio]{logo_epis.png}
+  \end{tabular}%
+}
+
+\vspace{0.9cm}
+
+% ------------------------------------------------------------------------------
+% 2. TÍTULOS DE ASIGNATURA Y TRABAJO
+% ------------------------------------------------------------------------------
+\begin{center}
+  {\fontsize{12pt}{14pt}\selectfont\bfseries\NombreAsignatura}\par\vspace{4pt}
+  {\fontsize{12pt}{14pt}\selectfont\bfseries\NombreTrabajo}
+\end{center}
+
+\vspace{0.4cm}
+
+% ------------------------------------------------------------------------------
+% 3. TABLA DE DATOS DEL ALUMNO
+% ------------------------------------------------------------------------------
+\noindent
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}m{2.7cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}m{2.6cm}|}
+  \hline
+  \centering\bfseries CÓDIGO/DNI & \centering\bfseries APELLIDOS Y NOMBRES & \bfseries FECHA \tabularnewline
+  \hline
+  \CodigoEstudiante & \ApellidosNombresEstudiante & \FechaEntrega \tabularnewline
+  \hline
+\end{tabularx}
+
+\vspace{0.6cm}
+
+% ------------------------------------------------------------------------------
+% 4. SECCIONES DEL TRABAJO / PRÁCTICA
+% ------------------------------------------------------------------------------
+
+\seccion{ACTIVIDADES}
+% Escribir o desarrollar aquí las actividades de la práctica
+\vspace{1.5cm}
+
+\seccion{EJERCICIOS}
+% Escribir o desarrollar aquí los ejercicios de la práctica
+\vspace{1.5cm}
+
+\seccion{CUESTIONARIO}
+% Escribir o desarrollar aquí las preguntas y respuestas del cuestionario
+\vspace{1.5cm}
+
+\seccion{CONCLUSIONES}
+% Escribir o redactar aquí las conclusiones de la práctica
+\vspace{1.5cm}
+
+% ------------------------------------------------------------------------------
+% 5. REFERENCIAS
+% ------------------------------------------------------------------------------
+% Opción A (Recomendada con .bib): Descomentar las siguientes líneas si se tiene archivo .bib:
+% \bibliographystyle{IEEEtran}
+% \bibliography{referencias} % busca referencias.bib
+%
+% Opción B (Manual): Descomentar para incluir referencias directas en el archivo:
+% \begin{thebibliography}{99}
+%   \bibitem{ref1} Autor, "Título del recurso o artículo", Revista/Editorial, 2026.
+% \end{thebibliography}
+%
+% Opción C (Plantilla base vacía como en el Word original):
+\seccionref
+
+\end{document}

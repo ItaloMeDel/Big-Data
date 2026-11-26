@@ -1,0 +1,241 @@
+GUÍA DEL TRABAJO INTEGRADOR DE LABORATORIO: PROYECTO BIG DATA 2026 
+ 
+• 
+Modalidad: Equipos de trabajo (3 a 4 integrantes). 
+• 
+Formato de Documentación: Formato estándar IEEE (artículo científico).  
+• 
+Metodología: Aprendizaje Basado en Proyectos (ABP).  
+ 
+ 
+ REQUISITO OBLIGATORIO DE TRABAJO EN EQUIPO (TODAS LAS FASES) 
+Para garantizar la evidencia del desempeño y el trabajo colaborativo en cada una de las 
+tres fases: 
+1. Grabaciones de Coordinación y Trabajo (Mínimo 1 Hora por Fase): 
+o 
+En cada fase (Fase 1, Fase 2 y Fase 3), el equipo debe acumular al menos 
+1 hora (60 minutos) de reuniones grabadas (pueden ser varias sesiones 
+cortas que sumen 1 hora o una sola sesión larga). 
+o 
+Requisitos de la grabación: 
+▪ 
+Todos los integrantes del equipo deben tener la cámara 
+encendida. 
+▪ 
+Todos los integrantes deben interactuar y participar activamente 
+en el debate, toma de decisiones o avance técnico del proyecto. 
+▪ 
+La grabación debe alojarse en la nube (YouTube.) y adjuntar el 
+enlace de acceso libre en el informe de cada fase. 
+2. Exposición Final del Proyecto (Fase 3): 
+o 
+En la Tercera Fase, el proyecto será expuesto y sustentado en vivo ante 
+el docente / jefe de prácticas. 
+o 
+Todos los integrantes del equipo deberán exponer su contribución y 
+responder preguntas técnicas sobre la implementación y validación. 
+ DISTRIBUCIÓN DE ROLES SUGERIDA DENTRO DEL EQUIPO 
+• 
+Integrante 1 (Arquitecto de Datos / Lead): Responsable de la arquitectura Big 
+Data, Teorema CAP y diseño NoSQL.  
+• 
+Integrante 2 (Ingeniero de Ingesta y Procesamiento): Responsable de la carga 
+de datos, pipelines y lógica MapReduce/Procesamiento.  
+• 
+Integrante 3 (Investigador & Analista de Seguridad/Ética): Lidera la 
+Investigación Formativa (Estado del Arte) y el análisis de Ética/Seguridad.  
+• 
+Integrante 4 (Analista de Calidad y Visualización) [en grupos de 4]: Diseña la 
+validación de resultados, dashboards y pruebas de rendimiento del sistema.  
+
+---PAGE---
+ DESARROLLO POR FASES EVALUATIVAS Y ENTREGABLES 
+ PRIMERA FASE: Planteamiento del Proyecto y Estado del Arte 
+• 
+Resultado de Aprendizaje (Producto): El estudiante plantea un proyecto de Big 
+Data. 
+1. Objetivos del Equipo: 
+• 
+Definición del Repositorio: Seleccionar un conjunto de datos masivo real de 
+fuentes abiertas (Data.gov, data.gov.uk, data.gov.au, Kaggle, etc.).  
+• 
+Investigación Formativa (Estado del Arte): Cada integrante debe revisar al 
+menos 2 artículos científicos indexados relacionados al tema (mínimo 6 a 8 
+artículos por grupo).  
+• 
+Caracterización de las 3Vs: Volumen, Velocidad y Variedad del dataset.  
+2. Entregable de la Fase 1: 
+• 
+Documento IEEE v1.0: 
+o 
+Sección I: Introducción y Planteamiento del Problema. 
+o 
+Sección II: Estado del Arte (Análisis comparativo de los artículos 
+científicos).  
+o 
+Sección III: Descripción del Repositorio (Variables, volumen y 
+procedencia).  
+o 
+Sección IV: Propuesta de Resultados y Objetivos del Análisis. 
+• 
+Evidencia de Trabajo: Enlace a la(s) grabación(es) de la reunión de coordinación 
+de la Fase 1 (mínimo 1 hora acumulada, cámaras encendidas y participación de 
+todos). 
+  
+ 
+ 
+ 
+SEGUNDA FASE: Diseños de Modelos, Paradigmas y Escalabilidad 
+• 
+Resultado de Aprendizaje (Producto): El estudiante diseña un modelo para 
+resolver un problema de Big Data. 
+1. Objetivos del Equipo: 
+• 
+Teorema CAP: Justificar la elección entre ACID vs. BASE / Consistencia vs. 
+Disponibilidad.  
+• 
+Modelamiento NoSQL: Diseñar la estructura en el paradigma NoSQL 
+seleccionado (Documental, Clave-Valor, Columnar o Grafos).  
+
+---PAGE---
+• 
+Diseño del Procesamiento: Esquema de ingesta y flujo de procesamiento masivo 
+(MapReduce / Pipelines).  
+2. Entregable de la Fase 2: 
+• 
+Documento IEEE v2.0 (Avance Integrado): 
+o 
+Observaciones subsanadas de la Fase 1. 
+o 
+Sección V: Arquitectura del Sistema Big Data y Teorema CAP. 
+o 
+Sección VI: Modelo de Datos NoSQL y Estrategias de Escalabilidad. 
+o 
+Sección VII: Modelo de Procesamiento y Transformación de Datos 
+(MapReduce/ETL). 
+• 
+Evidencia de Trabajo: Enlace a la(s) grabación(es) de la reunión de trabajo 
+técnico de la Fase 2 (mínimo 1 hora acumulada, cámaras encendidas e 
+interacción grupal). 
+ 
+ 
+ 
+ TERCERA FASE: Validación, Implementación, Ética y Sustentación Final 
+• 
+Resultado de Aprendizaje (Producto): El estudiante valida su proyecto de Big 
+Data. 
+1. Objetivos del Equipo: 
+• 
+Implementación: Carga del dataset y consultas masivas en el motor NoSQL 
+elegido (MongoDB, Hadoop HDFS, Apache Cassandra, etc.).  
+• 
+Validación: Comprobación de resultados y generación de visualizaciones o 
+dashboards.  
+• 
+Ética y Seguridad: Análisis sobre privacidad, seguridad y uso responsable de los 
+datos masivos.  
+2. Entregables de la Fase 3: 
+1. Artículo Final en Formato IEEE (Versión Completa): 
+o 
+Incluye todas las secciones consolidadas + Sección VIII: Implementación 
+y Validación, Sección IX: Ética, Privacidad y Seguridad y Sección X: 
+Conclusiones y Trabajo Futuro.  
+2. Repositorio de Código (GitHub/GitLab): Con scripts de carga, consultas y 
+manual README. 
+3. Evidencia de Trabajo: Enlace a la(s) grabación(es) de la reunión de 
+integración/validación de la Fase 3 (mínimo 1 hora acumulada, cámaras 
+encendidas). 
+
+---PAGE---
+4. Sustentación / Exposición Final: Presentación grupal en vivo del proyecto y 
+demostración del sistema funcionando. 
+ 
+ 
+INDICACIONES ADICIONALES 
+ 
+• 
+Plataforma Exclusiva: Las evidencias de coordinación deben alojarse 
+únicamente en YouTube (pueden ser enlaces con visibilidad Público). 
+• 
+Duración de evidencias de reunion, Mínima por Fase: 
+o 
+Fase 1: Al menos 1 hora (60 min) de reunión grabada y subida a YouTube.  
+o 
+Fase 2: Al menos 1 hora (60 min) de reunión grabada y subida a YouTube.  
+o 
+Fase 3: Al menos 1 hora (60 min) de reunión grabada y subida a YouTube.  
+• 
+Criterios Obligatorios en Video: 
+o 
+Todos los integrantes del equipo con cámara encendida. 
+o 
+Pero Todos los miembros deben interactuar y debatir activamente. 
+o 
+Nota: Puede ser un solo video de 60 minutos por fase o varios videos que 
+sumen en total el tiempo requerido por fase,. 
+ 
+ 2. TAMAÑO MÍNIMO REQUERIDO PARA EL REPOSITORIO DE DATOS 
+Para garantizar que el proyecto requiera técnicas de Big Data y NoSQL (y no sea una 
+simple consulta relacional): 
+• 
+Tamaño Físico Mínimo: 
+o 
+Mínimo de 100 MB a 500 MB en archivos fuente comprimidos o sin 
+procesar (CSV, JSON, Logs, Parquet, etc.).  
+o 
+Opción de Streaming/APIs: En caso de usar fuentes en tiempo real, se 
+exige un volumen equivalente recopilado de al menos 100,000 a 500,000 
+registros/filas.  
+• 
+Variedad de Datos (Deseable): Que el dataset contenga múltiples 
+colecciones/tablas o estructuras semiestructuradas (JSON/Logs) para justificar el 
+uso de arquitecturas NoSQL (MongoDB, Cassandra, HDFS).  
+ 
+ 
+ 
+ 
+
+---PAGE---
+ 3. ÁREAS Y TEMAS SUGERIDOS PARA EL PROYECTO 
+Se proponen las siguientes áreas de aplicación alineadas con los temas del sílabo y 
+repositorios públicos abiertos (Data.gov, data.gov.uk, data.gov.au, Kaggle):  
+Área 1: Movilidad Urbana y Transportes Intelligent (Smart Cities) 
+• 
+Tema Sugerido: Análisis Masivo de Movilidad y Telemetría de Vehículos Eléctricos 
+o Transporte Público. 
+• 
+Enfoque Big Data: Procesamiento de datos GPS/telemetría en tiempo real o 
+histórico con almacenamiento documental en MongoDB para análisis de rutas y 
+demanda masiva.  
+Área 2: Finanzas, E-commerce y Detección de Fraudes 
+• 
+Tema Sugerido: Análisis de Sentimiento y Transacciones Masivas de Compras en 
+Línea (Amazon/eBay/MercadoLibre). 
+• 
+Enfoque Big Data: Tratamiento de logs de comportamiento de usuarios y reseñas 
+(texto semiestructurado) aplicando análisis de grandes volúmenes con 
+Hadoop/MapReduce.  
+Área 3: Salud Pública y Redes Epidemiológicas 
+• 
+Tema Sugerido: Monitoreo y Predicción de Enfermedades o Registros Sanitarios 
+Nacionales. 
+• 
+Enfoque Big Data: Almacenamiento masivo orientado a columnas con Apache 
+Cassandra para garantizar la alta disponibilidad y escalabilidad de registros 
+médicos dispersos en múltiples sedes.  
+Área 4: Redes Sociales, Entretenimiento y Streaming 
+• 
+Tema Sugerido: Sistemas de Recomendación Basados en Consumo de Medios 
+(Spotify, Netflix, Steam). 
+• 
+Enfoque Big Data: Análisis de grafos o procesamiento distribuido de eventos de 
+usuarios (clics, reproducciones y valoraciones) para recomendación a gran 
+escala.  
+Área 5: Internet de las Cosas (IoT) y Medio Ambiente (Monitoreo Climático) 
+• 
+Tema Sugerido: Procesamiento de Lecturas de Sensores Ambientales e 
+Industriales (IoT Fundamentals). 
+• 
+Enfoque Big Data: Ingesta de millones de datos de temperatura, calidad del aire o 
+sensores industriales en series temporales para detección de anomalías masivas. 
+ 

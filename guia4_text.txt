@@ -1,0 +1,1106 @@
+=== PAGE 1 ===
+ 
+1
+UCSM-UNIVERSIDAD CATÓLICA DE SANTA MARÍA 
+EPIS-ESCUELA PROFESIONAL DE INGENIERÍA DE SISTEMAS 
+ 
+ 
+   
+ SESIÓN:             MONGODB PARA BIG DATA  
+    
+I  
+ 
+OBJETIVOS  
+  
+ Instalar y verificar MongoDB Community Server, Compass y MongoDB Shell en 
+Windows. 
+ El estudiante crea documentos y ejecutar operaciones de inserción, consulta, actualización 
+y eliminación. 
+ Conectar Python mediante PyMongo y construir programas reproducibles. 
+ El estudiante genera y cargar datos sintéticos por lotes, analizar sus resultados y estudiar 
+el efecto de un índice. 
+ El estudiante explica la relación entre la práctica local y los desafíos de Big Data, 
+distinguiendo volumen de datos y distribución real. 
+ 
+   
+II  
+ 
+TEMAS A TRATAR  
+ NoSQL documental; documentos BSON y representación JSON;  
+ Servidor y clientes; operaciones CRUD; filtros y proyecciones; Python y PyMongo; 
+generación reproducible;  
+ carga por lotes; agregación; verificación independiente; índices; exportación CSV; 
+escalabilidad horizontal. 
+ 
+ 
+III  
+ 
+COMPETENCIAS DE LA ASIGNATURA DESARROLLADAS  
+ 
+ Modela información semiestructurada mediante documentos y define reglas de calidad. 
+ Implementa soluciones de almacenamiento y análisis con evidencia verificable. 
+ Evalúa consultas y comunica decisiones técnicas, resultados y limitaciones. 
+ Colabora en la construcción de una práctica reproducible con datos no sensibles. 
+ 
+ 
+
+
+=== PAGE 2 ===
+ 
+2
+IV  
+ 
+DURACIÓN DE LA PRÁCTICA 
+ 
+ La práctica tiene una duración de 4 horas, las cuales están programadas en 2 sesiones 
+de 2 horas cada una. 
+ 
+ 
+ 
+V  
+ 
+RESULTADOS DE APRENDIZAJE 
+ 
+ El estudiante la muestra capacidad para comprender los fundamentos del no SQL 
+ 
+VI  
+ 
+INTRODUCCIÓN  
+ 
+Una tienda registra ventas procedentes de diferentes ciudades. Cada venta contiene un 
+producto, una cantidad y un precio; posteriormente también incluirá una fecha. El problema 
+consiste en almacenar esos registros y determinar cuántas ventas, unidades e ingresos 
+corresponden a cada ciudad. Primero se trabaja con cuatro documentos para comprobar cada 
+operación; luego se a0mplía a 100 000 registros. 
+MongoDB es un sistema de bases de datos. Python es un lenguaje de programación que puede 
+comunicarse con ese sistema. Los programas de esta guía utilizan PyMongo, el controlador 
+oficial de Python. Compass permite observar los mismos datos desde una interfaz gráfica. 
+Los datos permanecen en MongoDB aunque se cierre Python o Compass, siempre que se 
+conserve el almacenamiento del servidor. 
+ 
+ 
+VII  
+ 
+MARCO TEÓRICO  
+1 BASES DE DATOS NO RELACIONALES 
+NoSQL reúne modelos de almacenamiento distintos al modelo relacional tradicional. 
+MongoDB y CouchDB se orientan a documentos; Cassandra utiliza columnas anchas; Neo4j 
+trabaja con grafos; Redis proporciona estructuras de datos en memoria. NoSQL no significa 
+ausencia de reglas ni superioridad automática sobre SQL. El modelo debe responder a las 
+consultas y restricciones del caso. 
+2 DOCUMENTOS Y COLECCIONES 
+Un documento contiene campos y valores. MongoDB lo almacena en BSON, una 
+representación binaria que admite tipos como fechas, números, listas y documentos anidados. 
+En la consola se utiliza una sintaxis parecida a JSON. Una colección reúne documentos y una 
+
+
+=== PAGE 3 ===
+ 
+3
+base de datos reúne colecciones. Cada documento tiene un campo _id único dentro de su 
+colección. 
+El esquema flexible permite que algunos documentos contengan campos adicionales, pero 
+conviene acordar nombres y tipos. Si cantidad se guarda como texto en unos documentos y 
+como entero en otros, las operaciones de análisis pueden producir errores o resultados 
+incompletos. En esta guía cantidad y precio son enteros positivos; fecha es una fecha BSON. 
+3 COMPONENTES Y ENTORNOS DE EJECUCIÓN 
+Componente
+Qué hace
+MongoDB Server o mongoDB
+Guarda los datos y ejecuta las consultas. 
+Funciona como servicio de Windows. 
+Compass
+Cliente gráfico para conectarse y observar 
+documentos. 
+mongosh
+Consola interactiva para escribir instrucciones 
+de MongoDB. 
+PowerShell
+Terminal de Windows para instalar paquetes y 
+ejecutar archivos Python. 
+Python y PyMongo
+Programa y biblioteca que envían operaciones al 
+servidor. 
+ 
+No se deben intercambiar los entornos: la instrucción use guia5_bigdata es una instrucción de 
+mongosh; py --version pertenece a PowerShell; from pymongo import MongoClient 
+pertenece a un archivo Python. Los ejemplos identifican siempre su destino. 
+Ruta de trabajo  PowerShell inicia los programas; Compass y mongosh envían operaciones al 
+servidor; PyMongo conecta los archivos Python con MongoDB. Todos consultan el mismo 
+servidor local, pero utilizan sintaxis diferente. 
+4 OPERACIONES CRUD 
+Create inserta documentos; Read consulta; Update modifica; Delete elimina. Una consulta 
+utiliza un filtro, equivalente a una condición. La proyección selecciona los campos que se 
+muestran. Los campos _id explícitos permiten repetir inserciones mediante upsert sin duplicar 
+registros. 
+5 AGREGACIÓN Y RELACIÓN CON MAPREDUCE 
+Un pipeline de agregación transforma datos mediante etapas. $match filtra; $group agrupa y 
+calcula; $sort ordena; $project selecciona o transforma campos. $sum suma y $multiply 
+multiplica. Agrupar por ciudad y sumar importes cumple una finalidad parecida al ejercicio 
+de agrupación por clave de MapReduce, pero el pipeline es una API diferente y no prueba 
+que se esté ejecutando un trabajo Hadoop. 
+6 ÍNDICES Y ESCALABILIDAD 
+Un índice organiza valores de ciertos campos para facilitar búsquedas. Consume 
+almacenamiento y añade trabajo a las escrituras. Su utilidad depende del filtro y de cuántos 
+documentos se necesitan devolver. explain permite observar documentos y entradas de índice 
+examinados. La replicación mantiene copias y facilita disponibilidad; el sharding reparte 
+datos entre shards y permite escalar horizontalmente. No son la misma operación. 
+Esta guía usa un solo servidor. Cien mil registros permiten observar técnicas relacionadas con 
+Big Data, pero no existe un número universal que convierta un conjunto en Big Data. El 
+
+
+=== PAGE 4 ===
+ 
+4
+desafío aparece cuando volumen, velocidad o variedad requieren una arquitectura que supere 
+el manejo habitual de los recursos disponibles. 
+ 
+ 
+ 
+VIII  
+ 
+ 
+  
+  
+       RECURSOS  
+ 
+1. Guía de Laboratorio. 
+2. Dinámicas con ejercicios prácticos planteados. 
+3. Soluciones propuestas. 
+IX  
+ 
+ 
+  
+  
+METODOLOGÍA  
+ 
+ 
+ Se trabaja en equipos de 2 a 4 integrantes con roles rotativos de ejecución, revisión y 
+documentación. Primero se predice una salida; después se ejecuta la operación y se 
+compara la evidencia. No se avanza a la siguiente actividad si la verificación de la 
+actual falla. Se conservan capturas legibles, archivos de código y resultados; no basta 
+con copiar las instrucciones. 
+ Al inicio de cada sesión, otro integrante explica qué componente se está usando y 
+dónde residen los datos. Al finalizar, se registra una dificultad, su solución y una 
+limitación. El producto es una entrega integrada; la presentación tiene un máximo de 
+12 minutos e incluye teoría básica, instalación, uso y aplicación al caso, siguiendo el 
+tipo de actividad de la guía previa. 
+  
+ 
+X  
+ 
+ 
+  
+  
+ACTIVIDADES  
+I. 
+Actividades 
+ 
+Actividad 1 Preparar el equipo e instalar el servidor 
+Propósito: tener un servidor local en ejecución. La ruta detallada se basa en el instalador MSI 
+de MongoDB 8.0 para Windows 11 de 64 bits. Los nombres pueden variar en otras versiones; 
+consultar su documentación antes de instalar. El estudiante registra las versiones realmente 
+utilizadas. 
+PASO 1.1 COMPROBAR WINDOWS 
+El estudiante abre Inicio, Configuración, Sistema y Acerca de. El estudiante registra edición, 
+versión y tipo de sistema. Si el sistema es de 32 bits o no está soportado por la versión elegida, 
+no seguir esta ruta; coordinar un equipo compatible o una alternativa con el docente. 
+
+
+=== PAGE 5 ===
+ 
+5
+PASO 1.2 DESCARGAR MONGODB COMMUNITY SERVER 
+El estudiante abre https://www.mongodb.com/try/download/community. El estudiante 
+selecciona la rama 8.0 y su actualización disponible, Windows y paquete MSI. El estudiante 
+guarda el instalador en Descargas. Community Server es el servidor; descargar solamente 
+Compass no instala el almacenamiento. 
+PASO 1.3 INICIAR LA INSTALACIÓN 
+El estudiante abre el archivo MSI, seleccionar Next, leer y aceptar el acuerdo de licencia y 
+elegir Complete. Si Windows pide autorización, aprobar la instalación con una cuenta que 
+tenga permiso. No crear una cuenta Atlas: esta práctica trabaja localmente. 
+PASO 1.4 CONFIGURAR EL SERVICIO 
+El estudiante marca Install MongoD as a Service. El estudiante mantiene Run service as 
+Network Service user y el nombre MongoDB. El estudiante conserva las carpetas propuestas 
+para datos y registros de ejecución. El estudiante anota sus rutas si se modifican. No es 
+necesario crear manualmente C:\data\db cuando se instala como servicio con estas opciones. 
+PASO 1.5 INCLUIR COMPASS 
+Si aparece Install MongoDB Compass, mantenerlo marcado. El estudiante selecciona Install 
+y luego Finish. Si Compass no se instala, descargarlo posteriormente desde 
+https://www.mongodb.com/try/download/compass. 
+PASO 1.6 VERIFICAR EL SERVICIO 
+El estudiante presiona Windows + R, escribir services.msc y aceptar. El estudiante busca 
+MongoDB. Debe figurar En ejecución. Si está detenido, clic derecho e Iniciar. El estudiante 
+no inicia otra instancia manual de mongod en paralelo con el servicio: podría intentar usar el 
+mismo puerto. 
+Verificación y evidencia A1: capturar el servicio en ejecución; anotar versión, sistema 
+operativo y rutas de datos. Si el servicio no inicia, revisar el registro de errores en la carpeta 
+Log Directory anotada, sin borrar carpetas ni reinstalar repetidamente. 
+Actividad 2 Conectarse con Compass y mongosh 
+PASO 2.1 ABRIR COMPASS 
+El estudiante busca MongoDB Compass en Inicio. El estudiante selecciona Add new 
+connection o New Connection. En el campo URI pegar la dirección local siguiente y 
+seleccionar Connect. El nombre exacto del botón puede variar. 
+Dónde ejecutar: campo URI de Compass 
+mongodb://localhost:27017 
+localhost identifica esta computadora; 27017 es el puerto habitual. Compass puede mostrar 
+admin, config y local. Son bases del sistema y no deben utilizarse como colecciones del 
+ejercicio. El estudiante mantiene el servidor limitado al equipo local durante esta práctica. 
+PASO 2.2 INSTALAR MONGOSH 
+El estudiante abre https://www.mongodb.com/try/download/shell. El estudiante descarga el 
+instalador compatible con Windows de 64 bits y ejecutarlo. El estudiante añade mongosh al 
+PATH si el instalador lo ofrece. El estudiante cierra y volver a abrir PowerShell para que 
+reconozca la nueva configuración. 
+
+
+=== PAGE 6 ===
+ 
+6
+PASO 2.3 ABRIR Y VERIFICAR LA CONSOLA 
+El estudiante abre PowerShell desde Inicio. El estudiante ejecuta primero la versión y luego 
+la conexión. Una vez conectado, el indicador cambia y las instrucciones siguientes se escriben 
+dentro de mongosh. 
+Dónde ejecutar: PowerShell 
+mongosh --version 
+mongosh "mongodb://localhost:27017" 
+Dónde ejecutar: mongosh 
+db.runCommand({ ping: 1 }) 
+Verificación y evidencia A2: la respuesta del ping contiene ok: 1. El estudiante guarda captura 
+de Compass conectado y de mongosh con el ping. Si PowerShell no reconoce mongosh, 
+localizar mongosh.exe desde el acceso directo o la instalación y añadir su carpeta al PATH; 
+abrir nuevamente la terminal. El estudiante no confunde mongosh con el programa servidor 
+mongod. 
+Actividad 3 Crear y consultar cuatro ventas 
+PASO 3.1 SELECCIONAR LA BASE 
+En mongosh ejecutar el siguiente bloque. Se usa un nombre exclusivo de esta guía para no 
+mezclar los documentos con prácticas anteriores. 
+Dónde ejecutar: mongosh 
+use guia5_bigdata 
+db.getName() 
+El nombre esperado es guia5_bigdata. Seleccionarlo aún no guarda documentos. La base 
+aparecerá en Compass cuando se escriban datos. 
+PASO 3.2 GUARDAR VENTAS CON IDENTIFICADORES ESTABLES 
+El estudiante ejecuta el bloque completo. Se utiliza replaceOne con upsert para que los cuatro 
+documentos puedan crearse o restablecerse sin duplicarse. Esta operación sustituye 
+únicamente los documentos de estos identificadores; reservarlos para este ejemplo. 
+Dónde ejecutar: mongosh 
+const iniciales = [ 
+  {_id: "G5-001", producto: "Laptop", ciudad: "Arequipa", 
+   cantidad: 2, precio: 2500}, 
+  {_id: "G5-002", producto: "Mouse", ciudad: "Arequipa", 
+   cantidad: 5, precio: 40}, 
+  {_id: "G5-003", producto: "Laptop", ciudad: "Lima", 
+   cantidad: 1, precio: 2500}, 
+  {_id: "G5-004", producto: "Teclado", ciudad: "Lima", 
+   cantidad: 3, precio: 100} 
+]; 
+iniciales.forEach(venta => 
+  db.ventas_demo.replaceOne( 
+    {_id: venta._id}, venta, {upsert: true} 
+  ) 
+); 
+Explicación: iniciales contiene cuatro objetos; forEach recorre cada venta. El filtro busca su 
+_id. replaceOne coloca el documento indicado y upsert: true lo crea si todavía no existe. Los 
+identificadores permiten reconocer cada venta. 
+
+
+=== PAGE 7 ===
+ 
+7
+PASO 3.3 CONSULTAR TODOS LOS DOCUMENTOS 
+El estudiante ejecuta las consultas y observar las diferencias. find devuelve documentos; 
+countDocuments cuenta los que cumplen el filtro. El filtro vacío {} acepta todos los 
+documentos. 
+Dónde ejecutar: mongosh 
+db.ventas_demo.find() 
+db.ventas_demo.countDocuments({}) 
+db.ventas_demo.find({ciudad: "Arequipa"}) 
+db.ventas_demo.find({precio: {$gt: 500}}) 
+Resultados esperados: cuatro ventas en total, dos de Arequipa y dos documentos con precio 
+mayor que 500. $gt significa mayor que. Las cadenas distinguen mayúsculas en estas 
+consultas; Arequipa y arequipa no se consideran el mismo valor con la configuración 
+utilizada. 
+PASO 3.4 SELECCIONAR CAMPOS Y ORDENAR 
+La segunda parte de find es una proyección. Un 1 incluye un campo y _id: 0 oculta el 
+identificador. sort ordena: 1 ascendente y -1 descendente. 
+Dónde ejecutar: mongosh 
+db.ventas_demo.find({}, { 
+  _id: 0, producto: 1, ciudad: 1, precio: 1 
+}).sort({precio: -1}) 
+PASO 3.5 REPETIR UNA CONSULTA EN COMPASS 
+El estudiante actualiza la conexión; abrir guia5_bigdata, ventas_demo y Documents. En Filter 
+escribir {"ciudad": "Arequipa"} y seleccionar Find. Compass debe mostrar las mismas dos 
+ventas. El estudiante no pega aquí use ni db.ventas_demo.find; el campo Filter recibe 
+solamente el filtro. 
+Verificación y evidencia A3: capturar los cuatro documentos, las ventas de Arequipa y el 
+conteo. El estudiante repite el paso 3.2 y demostrar que el total sigue siendo cuatro en una 
+colección reservada para el ejemplo. 
+
+
+=== PAGE 8 ===
+ 
+8
+ 
+Figura 1  Results of applying a query filter 
+Fuente MongoDB. https://www.mongodb.com/docs/compass/query/filter/ 
+El estudiante identifica Documents y Filter. Para el caso de ventas introduce {"ciudad": 
+"Arequipa"}; el filtro contiene solo el documento de condición. 
+Pausa de comprobación  El estudiante explica por qué aparecen dos ventas de Arequipa. 
+Luego cambia el filtro a {"producto": "Laptop"} y verifica que aparecen dos documentos. Si 
+el resultado difiere, revisa la base, la colección y las mayúsculas. 
+Actividad 4 Completar CRUD y realizar la primera agregación 
+PASO 4.1 INSERTAR UN DOCUMENTO TEMPORAL 
+El estudiante guarda una quinta venta exclusivamente para demostrar inserción y eliminación. 
+Antes de repetir la inserción, comprobar si ya existe el _id; insertOne repetido con el mismo 
+_id produce error de duplicado. 
+ 
+Figura 2  Insert button 
+Fuente MongoDB. https://www.mongodb.com/docs/compass/documents/insert/ 
+
+
+=== PAGE 9 ===
+ 
+9
+El estudiante localiza Add Data e Insert Document. En esta guía la inserción principal se 
+realiza en mongosh; esta vista permite reconocer la operación equivalente en Compass. 
+Dónde ejecutar: mongosh 
+db.ventas_demo.insertOne({ 
+  _id: "G5-TEMP", producto: "Prueba", ciudad: "Tacna", 
+  cantidad: 1, precio: 10 
+}) 
+PASO 4.2 ACTUALIZAR Y VERIFICAR 
+El estudiante modifica únicamente la cantidad de ese documento mediante $set. findOne 
+muestra un solo documento. 
+Dónde ejecutar: mongosh 
+db.ventas_demo.updateOne( 
+  {_id: "G5-TEMP"}, {$set: {cantidad: 3}} 
+) 
+db.ventas_demo.findOne({_id: "G5-TEMP"}) 
+Resultado esperado: cantidad igual a 3. En updateOne, matchedCount informa documentos 
+encontrados y modifiedCount documentos cambiados; repetir el mismo valor puede producir 
+modifiedCount: 0. 
+PASO 4.3 ELIMINAR ÚNICAMENTE LA PRUEBA 
+El estudiante usa el filtro exacto del documento temporal. El estudiante no utiliza 
+deleteMany({}) ni drop en esta guía. 
+Dónde ejecutar: mongosh 
+db.ventas_demo.deleteOne({_id: "G5-TEMP"}) 
+db.ventas_demo.countDocuments({}) 
+Resultado esperado: deletedCount: 1 en la primera eliminación y cuatro ventas restantes. Si 
+se repite, deletedCount: 0 porque el temporal ya no existe. 
+PASO 4.4 CALCULAR INGRESOS POR CIUDAD 
+El estudiante ejecuta el pipeline. Cada documento aporta cantidad × precio al total de su 
+ciudad. 
+Dónde ejecutar: mongosh 
+db.ventas_demo.aggregate([ 
+  {$group: { 
+    _id: "$ciudad", 
+    ingresos: {$sum: {$multiply: ["$cantidad", "$precio"]}}, 
+    ventas: {$sum: 1} 
+  }}, 
+  {$sort: {ingresos: -1}} 
+]) 
+Ciudad
+Cálculo independiente
+Ingreso esperado
+Arequipa
+2 × 2500 + 5 × 40
+S/ 5 200
+Lima
+1 × 2500 + 3 × 100
+S/ 2 800
+Total
+5 200 + 2 800
+S/ 8 000
+ 
+Verificación y evidencia A4: registrar las salidas CRUD y los ingresos. El estudiante explica 
+que ventas: {$sum: 1} cuenta documentos; no suma cantidades de productos. Si el total no es 
+S/ 8 000, revisar que se eliminó el temporal y se conservaron los cuatro datos originales. 
+
+
+=== PAGE 10 ===
+ 
+10
+Actividad 5 Instalar Python y preparar el proyecto 
+PASO 5.1 INSTALAR O VERIFICAR PYTHON 
+El estudiante abre una ventana nueva de PowerShell. El estudiante ejecuta py --version. Si 
+muestra una versión de Python 3 compatible con PyMongo, conservar la instalación. Si no 
+existe, descargar Python desde https://www.python.org/downloads/windows/ y seguir el 
+instalador oficial. Si aparece Add Python to PATH, activarlo. El estudiante abre una terminal 
+nueva después de instalar. 
+Dónde ejecutar: PowerShell 
+py --version 
+Si py no existe pero python --version funciona, sustituir py por python únicamente en los 
+comandos de preparación. El estudiante no utiliza python2. Si aparecen alias que abren la 
+tienda de Windows, revisar la instalación y los alias de ejecución de aplicaciones. 
+PASO 5.2 CREAR LA CARPETA Y EL ENTORNO 
+Los siguientes comandos trabajan en la carpeta de usuario del estudiante. La carpeta 
+guia5_mongodb almacenará programas y resultados; la base de datos seguirá en las carpetas 
+del servicio MongoDB. 
+Dónde ejecutar: PowerShell 
+Set-Location $env:USERPROFILE 
+New-Item -ItemType Directory -Force guia5_mongodb 
+Set-Location guia5_mongodb 
+py -m venv .venv 
+.\.venv\Scripts\python.exe -m pip install pymongo 
+.\.venv\Scripts\python.exe -m pip show pymongo 
+Explicación: Set-Location cambia de carpeta. New-Item crea el directorio. venv prepara un 
+entorno aislado. -m pip ejecuta el instalador de paquetes con ese mismo Python. No se 
+requiere activar el entorno, porque todos los comandos señalan su ejecutable directamente. 
+PASO 5.3 PREPARAR EL EDITOR 
+El estudiante abre la carpeta guia5_mongodb en un editor. Para una ruta básica sin instalar 
+otro editor, ejecutar notepad 01_conexion.py desde PowerShell, aceptar la creación del 
+archivo y pegar el código de la actividad siguiente. El estudiante guarda con Ctrl + S. En el 
+Explorador activar Ver, Mostrar, Extensiones de nombre de archivo y comprobar que no se 
+guardó como .py.txt. 
+Si se usa Visual Studio Code, elegir el intérprete .venv\Scripts\python.exe. Esta guía ejecuta 
+los archivos desde PowerShell para evitar depender de la configuración del botón Run. El 
+estudiante usa comillas rectas y conservar los espacios de indentación al copiar desde Word; 
+no pegar números de pasos en el código. 
+Verificación y evidencia A5: registrar la versión de Python y PyMongo. Debe existir .venv 
+dentro de guia5_mongodb. Cada vez que se abra una terminal nueva, volver a la carpeta con 
+Set-Location "$env:USERPROFILE\guia5_mongodb". 
+Actividad 6 Conectar Python y consultar los datos 
+PASO 6.1 CREAR EL PRIMER ARCHIVO 
+El estudiante guarda el siguiente programa completo como 01_conexion.py. No se ejecuta en 
+mongosh. El servidor MongoDB debe continuar en ejecución. 
+
+
+=== PAGE 11 ===
+ 
+11
+Dónde ejecutar: archivo Python 01_conexion.py 
+from pymongo import MongoClient 
+from pymongo.errors import PyMongoError 
+cliente = MongoClient( 
+    "mongodb://localhost:27017/", 
+    serverSelectionTimeoutMS=5000 
+) 
+try: 
+    cliente.admin.command("ping") 
+    print("Conexión correcta") 
+    ventas = cliente["guia5_bigdata"]["ventas_demo"] 
+    print("Total:", ventas.count_documents({})) 
+    filtro = {"ciudad": "Arequipa"} 
+    for venta in ventas.find(filtro, {"_id": 0}): 
+        print(venta) 
+except PyMongoError as error: 
+    print("Error de MongoDB:", error) 
+    raise 
+finally: 
+    cliente.close() 
+PASO 6.2 EJECUTAR EL ARCHIVO 
+El estudiante guarda el editor y ejecutar el siguiente comando en PowerShell desde 
+guia5_mongodb. 
+Dónde ejecutar: PowerShell 
+.\.venv\Scripts\python.exe 01_conexion.py 
+Resultado esperado: Conexión correcta, Total: 4 y dos ventas de Arequipa. Si el total es cero, 
+revisar el nombre exacto de base y colección y confirmar que la actividad 3 se realizó en el 
+mismo servidor. 
+PASO 6.3 INTERPRETAR EL PROGRAMA 
+from 
+importa 
+el 
+controlador; 
+MongoClient 
+prepara 
+la 
+conexión. 
+serverSelectionTimeoutMS=5000 limita la espera de selección del servidor a cinco segundos. 
+ping obliga a comprobar que responde. Los corchetes seleccionan base y colección. find 
+produce un cursor que se recorre con for. except informa fallos y finally cierra la conexión 
+aun cuando se produzca un error. 
+Python utiliza diccionarios con llaves y pares clave: valor para representar documentos. En 
+Python se escribe True; en mongosh se escribe true. También cambian los métodos: 
+insert_many en Python e insertMany en mongosh. El estudiante no copia instrucciones de una 
+API sin adaptar su sintaxis. 
+Verificación y evidencia A6: capturar la salida e identificar qué líneas conectan, consultan y 
+cierran. El estudiante explica por qué instalar PyMongo no instala el servidor MongoDB. 
+Actividad 7 Generar datos y cargarlos por lotes 
+Propósito: generar 100 000 ventas sintéticas reproducibles. No se requieren nombres de 
+clientes ni datos reales. El programa usa precios enteros en soles para simplificar el cálculo; 
+en un sistema financiero real se debe definir cuidadosamente la representación monetaria. 
+PASO 7.1 COMPRENDER EL ESQUEMA 
+Se utiliza una colección nueva, ventas_masivas. Cada documento contiene un _id entre 1 y 
+TOTAL, producto, ciudad, cantidad, precio y fecha. Todos los documentos deben seguir estos 
+tipos: _id entero, producto y ciudad cadenas, cantidad y precio enteros positivos, fecha de 
+tipo datetime. Los registros son eventos diferentes aunque compartan valores de producto y 
+ciudad. 
+
+
+=== PAGE 12 ===
+ 
+12
+PASO 7.2 CREAR EL GENERADOR 
+El estudiante guarda el siguiente código completo como 02_generar_datos.py. El programa 
+carga únicamente en una colección vacía. Si encuentra datos, se detiene; así no duplica la 
+carga al repetirlo. 
+Dónde ejecutar: archivo Python 02_generar_datos.py 
+from datetime import datetime, timedelta, timezone 
+import random 
+from pymongo import MongoClient 
+TOTAL = 100_000 
+TAMANO_LOTE = 1_000 
+COLECCION = "ventas_masivas" 
+rng = random.Random(42) 
+ciudades = ["Arequipa", "Lima", "Cusco", "Tacna"] 
+productos = [ 
+    ("Laptop", 2500), ("Mouse", 40), 
+    ("Teclado", 100), ("Monitor", 700) 
+] 
+inicio = datetime(2026, 1, 1, tzinfo=timezone.utc) 
+cliente = MongoClient( 
+    "mongodb://localhost:27017/", 
+    serverSelectionTimeoutMS=5000 
+) 
+try: 
+    cliente.admin.command("ping") 
+    ventas = cliente["guia5_bigdata"][COLECCION] 
+    existentes = ventas.count_documents({}) 
+    if existentes: 
+        print("La colección ya contiene", existentes, "documentos.") 
+        print("No se agregaron datos. Verifique su carga anterior.") 
+    else: 
+        lote = [] 
+        total_unidades = 0 
+        total_ingresos = 0 
+        for numero in range(1, TOTAL + 1): 
+            producto, precio = rng.choice(productos) 
+            ciudad = rng.choice(ciudades) 
+            cantidad = rng.randint(1, 5) 
+            fecha = inicio + timedelta( 
+                minutes=rng.randrange(100_000) 
+            ) 
+            documento = { 
+                "_id": numero, "producto": producto, 
+                "ciudad": ciudad, "cantidad": cantidad, 
+                "precio": precio, "fecha": fecha 
+            } 
+            lote.append(documento) 
+            total_unidades += cantidad 
+            total_ingresos += cantidad * precio 
+            if len(lote) == TAMANO_LOTE: 
+                ventas.insert_many(lote) 
+                lote.clear() 
+                print("Insertados:", numero) 
+        if lote: 
+            ventas.insert_many(lote) 
+        print("Total en MongoDB:", ventas.count_documents({})) 
+        print("Unidades generadas:", total_unidades) 
+        print("Ingresos generados:", total_ingresos) 
+finally: 
+    cliente.close() 
+PASO 7.3 EJECUTAR Y OBSERVAR 
+El estudiante ejecuta el archivo y esperar a que termine. Cada mensaje muestra el progreso 
+acumulado. El estudiante no abre varios generadores simultáneamente sobre la misma 
+colección. 
+
+
+=== PAGE 13 ===
+ 
+13
+Dónde ejecutar: PowerShell 
+.\.venv\Scripts\python.exe 02_generar_datos.py 
+Resultado esperado: Total en MongoDB: 100000. El estudiante guarda también los totales de 
+unidades e ingresos impresos; se usarán en la validación. No se fija un tiempo esperado, 
+porque depende del equipo y del disco. 
+PASO 7.4 VERIFICAR DESDE MONGOSH Y COMPASS 
+En mongosh seleccionar guia5_bigdata y ejecutar las consultas. En Compass actualizar la 
+base y abrir ventas_masivas. El estudiante observa una muestra, no intentar mostrar todos los 
+documentos en una sola pantalla. 
+Dónde ejecutar: mongosh 
+use guia5_bigdata 
+db.ventas_masivas.countDocuments({}) 
+db.ventas_masivas.find().limit(5) 
+db.ventas_masivas.findOne({_id: 1}) 
+PASO 7.5 REPETIR LA EJECUCIÓN SIN DUPLICAR 
+El estudiante vuelve a ejecutar 02_generar_datos.py. Debe informar que existen 100 000 
+documentos y que no se agregaron datos. El estudiante repite el conteo. Esta protección no 
+repara una carga incompleta: solamente evita añadir más datos a una colección existente. 
+Si la carga se interrumpió y hay menos de TOTAL documentos, cambiar COLECCION por 
+"ventas_masivas_reintento" y volver a cargar desde cero en esa colección nueva. El estudiante 
+actualiza el nombre en las actividades posteriores. El estudiante no borra una colección para 
+recuperarse. Si se cambia TOTAL después de una carga, utilizar también una nueva 
+colección. 
+EXPLICACIÓN DEL GENERADOR 
+TOTAL define el número de documentos; TAMANO_LOTE define cuántos se envían en 
+cada operación. Son decisiones diferentes. 
+random.Random(42) usa una semilla fija para repetir la secuencia pseudoaleatoria bajo el 
+mismo entorno y código. El estudiante registra también la versión de Python. 
+choice selecciona una opción; randint(1, 5) incluye ambos extremos; randrange(100_000) 
+devuelve un entero de 0 a 99 999. 
+datetime y timedelta construyen fechas reales. Se usan fechas UTC para evitar ambigüedad 
+de zona horaria. 
+lote acumula como máximo mil documentos; insert_many los envía y clear vacía la lista local 
+después de una inserción exitosa. 
+Los totales se calculan a medida que se genera cada registro y no requieren conservar los cien 
+mil documentos en una lista. 
+Los _id explícitos únicos impiden duplicados de identidad. Una carga parcial persiste en el 
+servidor; no existe una transacción que revierta automáticamente todos los lotes. 
+Verificación y evidencia A7: guardar conteo, muestra y salida del segundo intento. El 
+estudiante registra TOTAL, lote, semilla, versiones y nombre final de la colección. Con un 
+equipo limitado, realizar una primera prueba con TOTAL = 10_000 en ventas_masivas_10k; 
+no mezclarla con la carga de 100 000. 
+
+
+=== PAGE 14 ===
+ 
+14
+Actividad 8 Analizar y validar los datos desde Python 
+PASO 8.1 DEFINIR LA PREGUNTA 
+Se desea obtener número de ventas, unidades e ingresos por ciudad. Antes de programar, 
+explicar qué diferencia existe entre contar documentos y sumar cantidad. Una venta puede 
+contener varias unidades. 
+PASO 8.2 CREAR EL ARCHIVO DE ANÁLISIS 
+El estudiante guarda el siguiente programa como 03_analizar_validar.py. Si en la actividad 
+anterior se cambió la colección, modificar COLECCION. El cálculo independiente recorre 
+un cursor y acumula totales en Python; no descarga todos los documentos en una lista. 
+Dónde ejecutar: archivo Python 03_analizar_validar.py 
+from collections import defaultdict 
+from pymongo import MongoClient 
+COLECCION = "ventas_masivas" 
+cliente = MongoClient( 
+    "mongodb://localhost:27017/", 
+    serverSelectionTimeoutMS=5000 
+) 
+try: 
+    cliente.admin.command("ping") 
+    ventas = cliente["guia5_bigdata"][COLECCION] 
+    if ventas.count_documents({}) == 0: 
+        raise RuntimeError("Primero ejecute el generador") 
+    etapas = [ 
+        {"$group": { 
+            "_id": "$ciudad", 
+            "ventas": {"$sum": 1}, 
+            "unidades": {"$sum": "$cantidad"}, 
+            "ingresos": {"$sum": { 
+                "$multiply": ["$cantidad", "$precio"] 
+            }} 
+        }}, 
+        {"$sort": {"ingresos": -1, "_id": 1}} 
+    ] 
+    resultados = list(ventas.aggregate(etapas)) 
+    for fila in resultados: 
+        print(fila) 
+    independiente = defaultdict( 
+        lambda: {"ventas": 0, "unidades": 0, "ingresos": 0} 
+    ) 
+    proyeccion = { 
+        "_id": 0, "ciudad": 1, "cantidad": 1, "precio": 1 
+    } 
+    for venta in ventas.find({}, proyeccion).batch_size(1000): 
+        fila = independiente[venta["ciudad"]] 
+        fila["ventas"] += 1 
+        fila["unidades"] += venta["cantidad"] 
+        fila["ingresos"] += venta["cantidad"] * venta["precio"] 
+    obtenido = { 
+        fila["_id"]: { 
+            "ventas": fila["ventas"], 
+            "unidades": fila["unidades"], 
+            "ingresos": fila["ingresos"] 
+        } 
+        for fila in resultados 
+    } 
+    if obtenido != dict(independiente): 
+        raise RuntimeError("No coinciden los dos cálculos") 
+    print("Validación correcta por ciudad") 
+    print("Total ventas:", sum(x["ventas"] for x in resultados)) 
+    print("Total unidades:", sum(x["unidades"] for x in resultados)) 
+    print("Total ingresos:", sum(x["ingresos"] for x in resultados)) 
+finally: 
+
+
+=== PAGE 15 ===
+ 
+15
+    cliente.close() 
+PASO 8.3 EJECUTAR E INTERPRETAR 
+El estudiante ejecuta el comando y registrar cada fila. El campo _id de la salida representa la 
+ciudad porque se eligió como clave de agrupación; no es el identificador de una venta. 
+Dónde ejecutar: PowerShell 
+.\.venv\Scripts\python.exe 03_analizar_validar.py 
+Resultados esperados: cuatro ciudades y mensaje Validación correcta por ciudad. La suma de 
+ventas debe coincidir con el conteo de la colección y con TOTAL; los totales de unidades e 
+ingresos deben coincidir con los guardados en la generación. La ciudad con mayor ingreso se 
+determina a partir de la salida real. 
+PASO 8.4 COMPRENDER DÓNDE SE CALCULA 
+aggregate ejecuta la agrupación en MongoDB. Python obtiene solo cuatro filas resumidas. La 
+validación independiente sí transmite los documentos necesarios mediante un cursor. Por ello 
+sirve como comprobación de esta práctica, aunque no sería la opción más eficiente para un 
+conjunto enorme. 
+list se usa aquí únicamente para las cuatro filas agregadas. El estudiante no utiliza 
+list(ventas.find({})) con los cien mil documentos: aumentaría innecesariamente el consumo 
+de memoria. batch_size controla el tamaño solicitado para lotes de resultados del cursor; no 
+es el lote de inserción de la actividad 7. 
+Verificación y evidencia A8: tabla con las cuatro ciudades y comparación por ciudad, no 
+solamente el total global. El estudiante documenta cualquier discrepancia y su causa antes de 
+continuar. 
+Comprobación visual en Compass  El estudiante abre ventas_masivas y selecciona 
+Aggregations. Añade una etapa $group con el contenido de la agrupación de la actividad 8 y 
+una etapa $sort. Compara las cuatro ciudades con la salida de Python. En el editor de cada 
+etapa introduce únicamente su contenido; si utiliza el editor de pipeline completo, introduce 
+el arreglo de etapas. 
+Actividad 9 Comparar una consulta antes y después de un índice 
+Propósito: comprobar qué trabajo realiza MongoDB para buscar ventas de un día. Un índice 
+no garantiza acelerar todas las consultas. Se utilizará una ventana pequeña de fechas para que 
+el filtro seleccione una fracción de la colección. 
+PASO 9.1 REVISAR ÍNDICES EXISTENTES 
+En mongosh seleccionar la base y consultar los índices. En una colección recién creada 
+aparecerá el índice _id_. Si ya existe fecha_1, la comparación inicial sin índice debe realizarse 
+sobre otra colección recién generada; no borrar índices de trabajos ajenos. 
+Dónde ejecutar: mongosh 
+use guia5_bigdata 
+db.ventas_masivas.getIndexes() 
+PASO 9.2 EJECUTAR LA CONSULTA SIN ÍNDICE DE FECHA 
+El estudiante ejecuta y registrar nReturned, totalDocsExamined, totalKeysExamined y 
+executionTimeMillis. No interpretar los milisegundos como una prueba concluyente de 
+rendimiento. 
+
+
+=== PAGE 16 ===
+ 
+16
+Dónde ejecutar: mongosh 
+db.ventas_masivas.find({ 
+  fecha: { 
+    $gte: ISODate("2026-01-10T00:00:00Z"), 
+    $lt: ISODate("2026-01-11T00:00:00Z") 
+  } 
+}).explain("executionStats") 
+El límite inferior es inclusivo y el superior exclusivo. Así se incluye todo el 10 de enero en 
+UTC sin depender de la precisión de una hora final. $gte significa mayor o igual; $lt significa 
+menor. El estudiante busca executionStats en el resultado. 
+PASO 9.3 CREAR EL ÍNDICE DE FECHA 
+El estudiante crea el índice y comprobar nuevamente la lista. El número 1 define orden 
+ascendente. 
+Dónde ejecutar: mongosh 
+db.ventas_masivas.createIndex({fecha: 1}) 
+db.ventas_masivas.getIndexes() 
+PASO 9.4 REPETIR EXACTAMENTE LA CONSULTA 
+El estudiante ejecuta otra vez el bloque del paso 9.2 sin modificar sus fechas. El estudiante 
+completa la comparación. El número de resultados debe ser el mismo en ambas ejecuciones. 
+Métrica
+Antes
+Después
+nReturned
+El estudiante completa
+El estudiante completa
+totalDocsExamined
+El estudiante completa
+El estudiante completa
+totalKeysExamined
+El estudiante completa
+El estudiante completa
+executionTimeMillis
+El estudiante completa
+El estudiante completa
+ 
+Interpretación esperada: sin índice de fecha puede observarse un recorrido de colección; con 
+índice puede aparecer un recorrido del índice y menos documentos examinados. Los nombres 
+y la estructura del plan varían según versión. Si el optimizador elige otro plan, describir la 
+evidencia en vez de forzar una conclusión. Un índice utilizado puede aumentar 
+totalKeysExamined desde cero y reducir el examen de documentos. 
+PASO 9.5 REPETIR LA OBSERVACIÓN DESDE PYTHON 
+Para observar la misma consulta sin confundir la API de mongosh y PyMongo, guardar el 
+siguiente archivo como 04_explicar_consulta.py. Ejecutarlo antes y después del índice si se 
+desea una comparación desde Python. 
+Dónde ejecutar: archivo Python 04_explicar_consulta.py 
+from datetime import datetime, timezone 
+from pymongo import MongoClient 
+with MongoClient("mongodb://localhost:27017/", 
+                 serverSelectionTimeoutMS=5000) as cliente: 
+    base = cliente["guia5_bigdata"] 
+    filtro = {"fecha": { 
+        "$gte": datetime(2026, 1, 10, tzinfo=timezone.utc), 
+        "$lt": datetime(2026, 1, 11, tzinfo=timezone.utc) 
+    }} 
+    resultado = base.command({ 
+        "explain": {"find": "ventas_masivas", "filter": filtro}, 
+        "verbosity": "executionStats" 
+    }) 
+    datos = resultado["executionStats"] 
+
+
+=== PAGE 17 ===
+ 
+17
+    for nombre in ["nReturned", "totalDocsExamined", 
+                   "totalKeysExamined", "executionTimeMillis"]: 
+        print(nombre, datos[nombre]) 
+Dónde ejecutar: PowerShell 
+.\.venv\Scripts\python.exe 04_explicar_consulta.py 
+Verificación y evidencia A9: adjuntar las métricas y explicar el costo del índice para 
+almacenamiento e inserciones. No afirmar que el índice distribuyó los datos o creó un clúster. 
+ 
+Figura 3  Indexes view 
+Fuente MongoDB. https://www.mongodb.com/docs/compass/indexes/ 
+El estudiante localiza Indexes y comprueba que fecha_1 aparece después de createIndex. Esta 
+pestaña comprueba la existencia del índice; explain permite estudiar su uso. 
+Actividad 10 Exportar resultados y comunicar la aplicación 
+PASO 10.1 CREAR LA EXPORTACIÓN 
+El estudiante guarda como 05_exportar_csv.py. Se exportan cuatro filas agregadas y no los 
+cien mil documentos. utf-8-sig ayuda a que algunas aplicaciones de Windows reconozcan los 
+acentos. El archivo se guarda en la carpeta desde la cual se ejecuta el programa. 
+Dónde ejecutar: archivo Python 05_exportar_csv.py 
+import csv 
+from pathlib import Path 
+from pymongo import MongoClient 
+with MongoClient("mongodb://localhost:27017/", 
+                 serverSelectionTimeoutMS=5000) as cliente: 
+    ventas = cliente["guia5_bigdata"]["ventas_masivas"] 
+    etapas = [ 
+        {"$group": { 
+            "_id": "$ciudad", 
+            "ventas": {"$sum": 1}, 
+            "unidades": {"$sum": "$cantidad"}, 
+            "ingresos": {"$sum": { 
+                "$multiply": ["$cantidad", "$precio"] 
+            }} 
+        }}, 
+        {"$sort": {"_id": 1}} 
+    ] 
+    ruta = Path("resumen_ciudades.csv") 
+    with ruta.open("w", newline="", encoding="utf-8-sig") as archivo: 
+        escritor = csv.writer(archivo) 
+        escritor.writerow(["ciudad", "ventas", "unidades", "ingresos"]) 
+        for fila in ventas.aggregate(etapas): 
+            escritor.writerow([ 
+                fila["_id"], fila["ventas"], 
+                fila["unidades"], fila["ingresos"] 
+
+
+=== PAGE 18 ===
+ 
+18
+            ]) 
+    print("Archivo creado:", ruta.resolve()) 
+Dónde ejecutar: PowerShell 
+.\.venv\Scripts\python.exe 05_exportar_csv.py 
+PASO 10.2 VERIFICAR EL ARCHIVO 
+El estudiante abre el CSV con un editor: debe tener una cabecera y cuatro filas. Si Excel 
+muestra todo en una columna, importar desde Datos, Desde texto o CSV, elegir UTF-8 y 
+separador coma. El estudiante compara las cifras con la actividad 8. Una nueva ejecución 
+sobrescribe el resumen generado. 
+PASO 10.3 APLICAR A UN CASO DEL EQUIPO 
+El estudiante elige un contexto no sensible: sensores simulados, inventario o eventos 
+académicos ficticios. El estudiante define al menos cinco campos, su tipo y una pregunta de 
+análisis. El estudiante crea una colección nueva con nombre propio. El estudiante genera 100 
+registros para validar primero; después ampliar a 10 000 o más según los recursos. El 
+estudiante reutiliza el flujo, adaptando los nombres, reglas y agregaciones. 
+PASO 10.4 PREPARAR LA PRESENTACIÓN 
+El estudiante presenta en un máximo de 12 minutos: 2 minutos de teoría y modelo; 2 de 
+instalación y conexión; 4 de demostración; 2 de resultados y validación; 2 de índices, 
+aplicación y límites. Todos los integrantes deben poder explicar el código. Evitar usar como 
+evidencia únicamente capturas de descargas. 
+Verificación y evidencia A10: CSV, descripción del caso y demostración reproducible. El 
+estudiante relaciona la propuesta con el proyecto del equipo si corresponde, sin utilizar datos 
+personales o institucionales que no estén autorizados. 
+ 
+ 
+XI  
+ 
+ EJERCICIOS  
+EJERCICIO 1 CONSULTAS SOBRE LAS CUATRO VENTAS 
+Sin cambiar los cuatro documentos originales: a) mostrar las laptops; b) mostrar ventas con 
+cantidad mayor o igual a 3; c) mostrar producto y cantidad sin _id; d) calcular unidades por 
+ciudad. Verificación del apartado d: Arequipa 7, Lima 4 y total 11 unidades. El estudiante 
+entrega comandos y salidas. 
+EJERCICIO 2 AGREGACIÓN POR PRODUCTO 
+En ventas_masivas calcular ventas, unidades e ingresos por producto. Ordenar por ingresos 
+descendentes. El estudiante verifica que la suma de ingresos por producto coincide con la 
+suma por ciudad. El estudiante explica por qué el producto con más ventas no tiene que ser 
+el de mayores ingresos. 
+EJERCICIO 3 FILTRO ANTES DE AGRUPAR 
+El estudiante construye un pipeline con $match para Arequipa y $group por producto. El 
+estudiante compara la suma de sus ingresos con el ingreso de Arequipa obtenido en la 
+actividad 8. El estudiante indica qué cambia si se agrupa primero y se intenta filtrar por un 
+campo que ya no existe en la salida. 
+
+
+=== PAGE 19 ===
+ 
+19
+EJERCICIO 4 CALIDAD DE DATOS 
+El estudiante crea una colección separada pruebas_calidad con 8 a 15 registros ficticios. El 
+estudiante incluye una cantidad negativa, un precio guardado como texto y una ciudad vacía. 
+Antes de cargar, definir una función Python que acepte únicamente cantidad y precio enteros 
+positivos y ciudad no vacía. El estudiante guarda los válidos y registrar los rechazados con su 
+causa. No mezclar esta colección con ventas_masivas. 
+EJERCICIO 5 CASO PROPIO DEL EQUIPO 
+Desarrollar el contexto elegido en la actividad 10. El estudiante incluye esquema, semilla y 
+volumen, carga por lotes, dos filtros, una agregación, cálculo independiente y una propuesta 
+de índice justificada por una consulta. El estudiante documenta cómo se evita una segunda 
+carga accidental y cómo se recuperaría una interrupción sin borrar datos ajenos. 
+AMPLIACIÓN OPCIONAL 
+El estudiante calcula el ingreso promedio por venta y ciudad como ingresos / ventas. 
+Compararlo con el promedio de los importes individuales. El estudiante explica por qué no 
+se deben promediar directamente los promedios de grupos con distinto tamaño. 
+ 
+ 
+ 
+ CUESTIONARIO  
+1. ¿Qué es el pensamiento lateral y quién lo acuñó? 
+2.  ¿Qué diferencia existe entre MongoDB Server, Compass, mongosh y PyMongo? 
+3.  ¿Dónde se almacenan los documentos y qué ocurre al cerrar Python? 
+4. .¿Por qué un esquema flexible no elimina la necesidad de validar tipos y campos? 
+5.  ¿Qué representa _id en una venta y qué representa _id en la salida de $group por ciudad? 
+6.  ¿Cómo se diferencia countDocuments de sumar cantidad? Ilustrar con una venta de cinco 
+unidades. 
+7.  ¿Qué efecto tienen upsert y los identificadores estables en la repetición del ejemplo 
+inicial? 
+8.  ¿Por qué cargar por lotes y recorrer un cursor resulta útil al aumentar el volumen? 
+9.  ¿Cómo se verifica que la agregación es correcta y qué limitaciones tiene la verificación 
+usada? 
+10.  ¿Qué significan nReturned, totalDocsExamined y totalKeysExamined? ¿Por qué el 
+tiempo no basta para evaluar un índice? 
+11.  ¿Qué aporta la semilla aleatoria y qué parámetros deben registrarse para reproducir la 
+práctica? 
+12.  ¿Qué diferencia existe entre replicación, sharding y un índice? ¿Cuál se implementó 
+realmente? 
+13.  ¿En qué condiciones el caso podría requerir una arquitectura Big Data y qué relación 
+guarda su agregación con la práctica de MapReduce? 
+XIII  
+ 
+ CONCLUSIONES Y RESULTADOS  
+ 
+
+
+=== PAGE 20 ===
+ 
+20
+Conclusión 1 sobre almacenamiento y Python: explicar cómo se relacionan servidor, 
+documentos y programa; citar una operación ejecutada y su resultado. 
+Conclusión 2 sobre análisis y calidad: explicar qué información se obtuvo, cómo se comprobó 
+y qué regla de calidad fue necesaria. 
+Conclusión 3 sobre escalabilidad: explicar qué cambió con el índice y qué limitación mantiene 
+el servidor local frente a un escenario de Big Data. 
+XIV  
+ 
+REFERENCIAS  
+ 
+ 
+MongoDB. 
+Instalación 
+de 
+Community 
+Edition 
+8.0 
+en 
+Windows. 
+https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-windows/ 
+MongoDB. Instalación de MongoDB Shell. https://www.mongodb.com/docs/mongodb-
+shell/install/ 
+MongoDB. Instalación de Compass. https://www.mongodb.com/docs/compass/install/ 
+MongoDB. 
+Primeros 
+pasos 
+con 
+PyMongo 
+y 
+creación 
+de 
+clientes. 
+https://www.mongodb.com/docs/languages/python/pymongo-driver/current/get-started/ 
+MongoDB. 
+Operaciones 
+CRUD 
+con 
+PyMongo. 
+https://www.mongodb.com/docs/languages/python/pymongo-driver/current/crud/ 
+MongoDB. 
+Pipeline 
+de 
+agregación. 
+https://www.mongodb.com/docs/manual/core/aggregation-pipeline/ 
+MongoDB. 
+Interpretación 
+de 
+planes 
+de 
+ejecución. 
+https://www.mongodb.com/docs/manual/tutorial/analyze-query-plan/ 
+MongoDB. Sharding. https://www.mongodb.com/docs/manual/sharding/ 
+Python 
+Software 
+Foundation. 
+Descargas 
+de 
+Python 
+para 
+Windows. 
+https://www.python.org/downloads/windows/ 
+Python 
+Software 
+Foundation. 
+Entornos 
+virtuales 
+y 
+módulo 
+csv. 
+https://docs.python.org/3/library/venv.html 
+Dean, J., y Ghemawat, S. (2004). MapReduce: Simplified data processing on large clusters. 
+OSDI, 137–150. 
+https://research.google/pubs/mapreduce-simplified-data-processing-on-
+large-clusters/ 
+ 
+ 
+ 
+
+
+=== PAGE 21 ===
+ 
+21
+1. 
+ANEXO A RESOLUCIÓN DE DIFICULTADES FRECUENTES 
+Problema
+Comprobación y solución
+Compass no conecta
+El estudiante verifica servicio MongoDB en 
+ejecución; usar localhost:27017; probar ping en 
+mongosh. 
+mongosh no se reconoce
+Instalar Shell por separado, añadir su carpeta al 
+PATH y abrir una terminal nueva. 
+No module named pymongo
+Instalar con .\.venv\Scripts\python.exe -m pip 
+install pymongo y ejecutar con ese mismo 
+Python. 
+No se encuentra el archivo Python
+El estudiante vuelve a guia5_mongodb; revisar 
+nombre y extensión .py; confirmar que el 
+archivo se guardó. 
+SyntaxError o IndentationError
+El estudiante usa comillas rectas, conservar los 
+espacios y copiar solamente el código. Revisar 
+la línea señalada. 
+ServerSelectionTimeoutError
+El estudiante comprueba servidor, puerto y URI; 
+PyMongo 
+es 
+el 
+cliente 
+y 
+no 
+inicia 
+automáticamente el servicio. 
+DuplicateKeyError
+El _id ya existe; consultar el documento. No 
+volver a insertar G5-TEMP si aún no se eliminó.
+Carga parcial
+El estudiante compara conteo con TOTAL; crear 
+una colección de reintento y adaptar nombres 
+posteriores. 
+Totales diferentes
+El estudiante comprueba misma base y 
+colección, ausencia del temporal y que no se 
+alteraron las ventas. 
+CSV en una columna
+Importar como texto UTF-8 con separador coma 
+desde Excel. 
+
+
+=== PAGE 22 ===
+ 
+22
+ 
+
+

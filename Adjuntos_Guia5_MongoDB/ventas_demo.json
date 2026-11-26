@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "G5-001",
+    "producto": "Laptop",
+    "ciudad": "Arequipa",
+    "cantidad": 2,
+    "precio": 2500
+  },
+  {
+    "_id": "G5-002",
+    "producto": "Mouse",
+    "ciudad": "Arequipa",
+    "cantidad": 5,
+    "precio": 40
+  },
+  {
+    "_id": "G5-003",
+    "producto": "Laptop",
+    "ciudad": "Lima",
+    "cantidad": 1,
+    "precio": 2500
+  },
+  {
+    "_id": "G5-004",
+    "producto": "Teclado",
+    "ciudad": "Lima",
+    "cantidad": 3,
+    "precio": 100
+  }
+]

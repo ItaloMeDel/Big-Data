@@ -1,0 +1,46 @@
+ADJUNTOS DE LA GUÍA 5: MONGODB PARA BIG DATA
+
+La guía incluye el código de los cinco programas. Estos adjuntos evitan transcribirlo desde el PDF. No se necesitan datos reales ni un archivo previo de 100 000 ventas: 02_generar_datos.py los genera en MongoDB.
+
+PREPARACIÓN (Windows / PowerShell)
+1. Instalar y verificar MongoDB Server, Compass y mongosh según actividades 1 y 2.
+2. Descomprimir este paquete en una carpeta guia5_mongodb y abrir PowerShell allí.
+3. Ejecutar:
+   py -m venv .venv
+   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+   .\.venv\Scripts\python.exe -m pip freeze > versiones_instaladas.txt
+
+ORDEN DE USO
+Actividades 3 y 4:
+   mongosh "mongodb://localhost:27017" --file 00_ventas_demo.js
+   mongosh "mongodb://localhost:27017" --file 00_crud_agregacion.js
+Actividad 6:
+   .\.venv\Scripts\python.exe 01_conexion.py
+Actividad 7:
+   .\.venv\Scripts\python.exe 02_generar_datos.py
+Actividad 8:
+   .\.venv\Scripts\python.exe 03_analizar_validar.py
+Actividad 9 (antes de crear el índice):
+   .\.venv\Scripts\python.exe 04_explicar_consulta.py
+   mongosh "mongodb://localhost:27017" --file 09_comparar_indice.js
+   .\.venv\Scripts\python.exe 04_explicar_consulta.py
+Actividad 10:
+   .\.venv\Scripts\python.exe 05_exportar_csv.py
+Este último programa crea resumen_ciudades.csv con los resultados de SU base de datos.
+
+ARCHIVOS ADICIONALES
+- ventas_demo.json: cuatro documentos originales; importación opcional en Compass, colección ventas_demo vacía. No volver a importar si ya existen esos _id. La ruta con 00_ventas_demo.js es repetible.
+- pruebas_calidad.json: diez registros ficticios, seis válidos y cuatro inválidos; incluye negativo, texto, ciudad vacía y booleano.
+- 06_calidad_plantilla.py: ejercicio para completar; no es una solución terminada ni escribe en MongoDB.
+- registro_evidencias.csv y comparacion_indices.csv: plantillas vacías; completar con ejecución real.
+- caso_equipo_plantilla.md: esquema de entrega para ejercicio 5 y avance adicional.
+- resumen_ciudades_REFERENCIA.csv: cálculo OFFLINE del generador con semilla 42 y 100 000 registros. No es una exportación de MongoDB ni una evidencia de ejecución. Comparar solo si se conservan código, parámetros y entorno compatibles.
+
+REPETICIÓN Y CARGA PARCIAL
+El generador no añade datos si la colección ya contiene documentos. Para una carga parcial, cambiar COLECCION a una colección nueva y adaptar ese nombre en análisis, exportación, explain y archivos JS. No se borra ninguna colección.
+Los scripts CRUD sustituyen solamente G5-001 a G5-004 y eliminan únicamente G5-TEMP. Reservar estos identificadores para la práctica.
+Los ejercicios 1, 2 y 3 se resuelven por el estudiante según la guía.
+Las capturas, tiempos y planes de ejecución deben obtenerse en el equipo del estudiante; no se incluyen resultados simulados de rendimiento.
+
+VALIDACIÓN DEL PAQUETE
+Se comprobó la sintaxis de los archivos Python y la coherencia del cálculo de referencia. No se ejecutó una conexión contra un servidor MongoDB en este entorno.

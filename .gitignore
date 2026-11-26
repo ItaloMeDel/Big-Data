@@ -1,0 +1,20 @@
+# MongoDB
+mongodb_dist/
+mongosh_dist/
+compass_dist/
+mongodb-compass-*.zip
+
+# Bases de datos locales
+data_db/
+*.wt
+*.wt.old
+WiredTigerLog.*
+WiredTigerTurtle
+WiredTiger.wt
+
+# Archivos de depuración
+*.pdb
+
+# Archivos ERA5 pesados
+Trabajo Integrador/era5_peru_202001.nc
+Trabajo Integrador/era5_data/*.nc

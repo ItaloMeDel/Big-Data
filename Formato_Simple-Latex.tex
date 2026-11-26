@@ -1,0 +1,476 @@
+\documentclass[12pt,a4paper]{article}
+
+% ==============================================================================
+% PAQUETES BÁSICOS Y CODIFICACIÓN
+% ==============================================================================
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla,es-noquoting]{babel}
+
+% Márgenes idénticos al documento Word original (2.3 cm laterales, 2.0 cm sup/inf)
+\usepackage[a4paper, left=2.3cm, right=2.3cm, top=2.0cm, bottom=2.0cm]{geometry}
+
+% Fuente Calibri idéntica a Word mediante la tipografía Carlito
+\usepackage{carlito}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Paquetes para tablas, gráficos y diseño
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}
+
+% Rutas de búsqueda de imágenes (soporta carpeta img/ o directorio actual)
+\graphicspath{{img/}{logos/}{./}{JINIS/}}
+
+% ==============================================================================
+% CONFIGURACIÓN DE CÓDIGO FUENTE (Para prácticas de Big Data / Programación)
+% ==============================================================================
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.45,0.45,0.45}
+\definecolor{codepurple}{rgb}{0.55,0,0.8}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+
+\lstdefinestyle{estilocodigo}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=6pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{codegray!40}
+}
+\lstset{style=estilocodigo}
+
+% ==============================================================================
+% DEFINICIÓN DE MACROS Y FORMATO DE ENCABEZADOS << SECCIÓN >>
+% ==============================================================================
+\newcommand{\llav}{\symbol{60}\symbol{60}}
+\newcommand{\rlav}{\symbol{62}\symbol{62}}
+\newcommand{\marcador}[1]{\llav\ #1\ \rlav}
+\newcommand{\marcadornospace}[1]{\llav#1\rlav}
+
+% Comando de sección al estilo exacto del Word original
+\newcommand{\seccion}[1]{%
+  \vspace{0.65cm}%
+  {\centering\bfseries\fontsize{12pt}{14pt}\selectfont\marcador{\MakeUppercase{#1}}\par}%
+  \vspace{0.30cm}%
+}
+
+% Comando de sección de referencias sin espacio interior
+\newcommand{\seccionref}{%
+  \vspace{0.65cm}%
+  {\centering\bfseries\fontsize{12pt}{14pt}\selectfont\marcadornospace{REFERENCIAS}\par}%
+  \vspace{0.30cm}%
+}
+
+% Compatibilidad con \section estándar
+\makeatletter
+\renewcommand{\section}{\@ifstar\mi@section@star\mi@section@nostar}
+\newcommand{\mi@section@nostar}[1]{\seccion{#1}}
+\newcommand{\mi@section@star}[1]{\seccion{#1}}
+\makeatother
+
+% ==============================================================================
+% DATOS DEL TRABAJO / ASIGNATURA / ESTUDIANTE
+% ==============================================================================
+\newcommand{\NombreAsignatura}{BIG DATA}
+\newcommand{\NombreTrabajo}{INFORME ACADÉMICO: LÓGICA DIFUSA Y CIBERSEGURIDAD (JINIS 2026)}
+\newcommand{\CodigoEstudiante}{2022246951}
+\newcommand{\ApellidosNombresEstudiante}{Medina Delgado Italo Gabriel}
+\newcommand{\FechaEntrega}{19/11/2026}
+
+% ==============================================================================
+% INICIO DEL DOCUMENTO
+% ==============================================================================
+\begin{document}
+\pagestyle{plain}
+
+% ------------------------------------------------------------------------------
+% 1. ENCABEZADO INSTITUCIONAL CON LOGOS (UCSM y EPIS)
+% ------------------------------------------------------------------------------
+\noindent\makebox[\textwidth][c]{%
+  \begin{tabular}{@{} m{3.0cm} @{\hspace{0.25cm}} m{11.8cm} @{\hspace{0.25cm}} m{2.4cm} @{}}
+    \centering\includegraphics[height=3cm, keepaspectratio]{logo_ucsm.png} &
+    \centering
+    {\fontsize{15pt}{18pt}\selectfont\bfseries UNIVERSIDAD CATÓLICA DE SANTA MARÍA}\par\vspace{2.5pt}
+    \rule{11.6cm}{0.5pt}\par\vspace{3.5pt}
+    {\fontsize{13pt}{16pt}\selectfont\bfseries ESCUELA PROFESIONAL DE INGENIERÍA DE SISTEMAS} &
+    \centering\includegraphics[height=3cm, keepaspectratio]{logo_epis.png}
+  \end{tabular}%
+}
+
+\vspace{0.6cm}
+
+% ------------------------------------------------------------------------------
+% 2. TÍTULOS DE ASIGNATURA Y TRABAJO
+% ------------------------------------------------------------------------------
+\begin{center}
+  {\fontsize{12pt}{14pt}\selectfont\bfseries\NombreAsignatura}\par\vspace{4pt}
+  {\fontsize{12pt}{14pt}\selectfont\bfseries\NombreTrabajo}
+\end{center}
+
+\vspace{0.3cm}
+
+% ------------------------------------------------------------------------------
+% 3. TABLA DE DATOS DEL ALUMNO
+% ------------------------------------------------------------------------------
+\noindent
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}m{2.7cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}m{2.6cm}|}
+  \hline
+  \centering\bfseries CÓDIGO/DNI & \centering\bfseries APELLIDOS Y NOMBRES & \bfseries FECHA \tabularnewline
+  \hline
+  \CodigoEstudiante & \ApellidosNombresEstudiante & \FechaEntrega \tabularnewline
+  \hline
+\end{tabularx}
+
+\vspace{0.4cm}
+
+% ------------------------------------------------------------------------------
+% 4. CONTENIDO DEL INFORME ACADÉMICO
+% ------------------------------------------------------------------------------
+
+\seccion{INTRODUCCIÓN Y DATOS DE LA CONFERENCIA}
+
+El presente informe académico expone y sintetiza de manera exhaustiva los fundamentos, metodologías, marcos normativos y hallazgos empíricos abordados en la conferencia magistral titulada \textbf{``Lógica Difusa y Ciberseguridad''}, disertada por el \textbf{Dr. Edward Hinojosa Cárdenas} en el marco de las \textbf{XXXIII Jornadas Internacionales de Ingeniería de Sistemas (JINIS 2026)}, evento académico de trascendencia internacional organizado por la Escuela Profesional de Ingeniería de Sistemas (EPIS) y el Vicerrectorado de Investigación de la Universidad Católica de Santa María (UCSM), en cooperación con entidades especializadas en ciberdefensa como Kunak Think Secure.
+
+\subsection*{Perfil del Ponente y Contexto Temático}
+El expositor, Dr. Edward Hinojosa Cárdenas, posee el grado de Doctor en Ciencia de la Computación, ostenta el título profesional de Ingeniero de Sistemas y se desempeña como docente ordinario en las escuelas de pregrado y posgrado de la Universidad Nacional de San Agustín de Arequipa (UNSA). Sus principales líneas de investigación comprenden la Inteligencia Artificial (IA), la Inteligencia Computacional y la Lógica Difusa (\textit{Fuzzy Logic}), manteniendo como canal de vinculación científica institucional el correo \texttt{ehinojosa@unsa.edu.pe}.
+
+La temática central expuesta por Hinojosa Cárdenas (2026) abordó la convergencia crítica entre dos disciplinas en acelerada evolución: la Ciberseguridad y la Inteligencia Artificial. En un panorama tecnológico dominado por volúmenes masivos de datos (\textit{Big Data}), la ciberseguridad se ha visto fortalecida mediante algoritmos avanzados de aprendizaje automático (\textit{Machine Learning}) orientados a la detección de anomalías, identificación proactiva de amenazas, mitigación y prevención de ciberataques, optimización de la gestión de vulnerabilidades y automatización de la respuesta ante incidentes críticos de infraestructura digital. No obstante, dicho avance técnico impone desafíos éticos, legales y operacionales determinantes, particularmente ligados a la opacidad de los algoritmos de ``caja negra'', los cuales encuentran en la lógica difusa y los sistemas explicables una vía de resolución científicamente contrastada.
+
+\seccion{MARCO REGULATORIO Y EL PARADIGMA DE LA IA EXPLICABLE (XAI)}
+
+Uno de los ejes axiales enfatizados durante la ponencia radicó en la necesidad inaplazable de que las soluciones de inteligencia artificial cumplan con estrictos marcos normativos internacionales y nacionales, los cuales exigen interpretabilidad, transparencia y rendición de cuentas en sistemas automatizados con impacto en la seguridad de la información y la sociedad.
+
+\subsection*{1. Marco Regulatorio Internacional: Reglamento Europeo de IA (AI Act)}
+El ponente destacó la promulgación del \textbf{Reglamento (UE) 2024/1689} del Parlamento Europeo y del Consejo, conocido a nivel global como el \textit{AI Act}, aprobado el 13 de junio de 2024 y publicado formalmente en el Diario Oficial de la Unión Europea el 12 de julio de 2024. Este reglamento pionero clasifica los sistemas según niveles de riesgo, estableciendo exigencias normativas directas para las tecnologías de alta criticidad:
+\begin{itemize}
+    \item \textbf{Artículo 13 (Transparencia e interpretación de resultados):} Prescribe obligatoriamente que los sistemas de IA categorizados como de alto riesgo (entre ellos aquellos que comprometen la salud, la seguridad pública, infraestructuras críticas o derechos fundamentales) deben ser diseñados de forma tal que su funcionamiento algorítmico interno sea suficientemente transparente, garantizando que los operadores y usuarios autorizados logren interpretar sus cómputos y emplearlos conforme a su propósito legítimo.
+    \item \textbf{Artículo 86 (Derecho a obtener una explicación de determinadas decisiones):} Reconoce el derecho subjetivo de toda persona afectada por resoluciones emitidas por modelos de IA de alto riesgo a recibir explicaciones inteligibles, claras y sustantivas sobre el rol desempeñado por el modelo en la decisión final y los factores preponderantes que la originaron.
+\end{itemize}
+
+\subsection*{2. Marco Normativo Peruano: Ley N° 31814 y D.S. N° 115-2025-PCM}
+A nivel nacional, el Estado peruano ha consolidado una postura jurídica explícita respecto al despliegue responsable de la IA a través de la \textbf{Ley N.° 31814} (promulgada en julio de 2023), que promueve el uso ético y seguro de la inteligencia artificial para el desarrollo socioeconómico, y su respectiva reglamentación oficial aprobada mediante el \textbf{Decreto Supremo N° 115-2025-PCM}. Hinojosa Cárdenas (2026) remarcó dos de sus principios rectores cardinales contenidos en el Artículo 7:
+\begin{itemize}
+    \item \textbf{Inciso i) Principio de Transparencia:} Establece que todo sistema fundamentado en IA debe ser explícito, accesible y explicable, resguardando que las estructuras de procesamiento, flujos algorítmicos y decisiones finales resulten cabalmente comprensibles para los usuarios finales, equipos implementadores y autoridades fiscalizadoras.
+    \item \textbf{Inciso d) Principio de Supervisión Humana (\textit{Human-in-the-Loop}):} Estipula el imperativo ineludible de que los modelos automatizados operen sujetos a una supervisión humana permanente y efectiva, cautelando que sus conclusiones salvaguarden directrices éticas, de justicia y de respeto inequívoco a los derechos fundamentales.
+\end{itemize}
+
+\subsection*{3. Inteligencia Artificial Explicable (XAI) y la Frontera Precisión vs. Explicabilidad}
+La respuesta de la ingeniería de software a este mandato regulatorio es la \textbf{Inteligencia Artificial Explicable} (\textit{Explainable AI} - XAI), conceptualizada como el compendio de procesos, métodos matemáticos y arquitecturas tecnológicas diseñadas para permitir a los humanos comprender, auditar, rastrear y confiar en las predicciones generadas por los modelos de aprendizaje automático.
+
+\begin{figure}[H]
+\centering
+\begin{tabularx}{\textwidth}{X X}
+\toprule
+\textbf{Modelo Tradicional de IA (Caja Negra)} & \textbf{Modelo Basado en XAI (Explicable)} \\
+\midrule
+$\text{Datos de Entrenamiento} \longrightarrow \text{Proceso ML} \longrightarrow \text{Función Aprendida}$ \par\vspace{2pt}
+\textit{Resultado:} El usuario recibe una clasificación o veredicto sin trazabilidad lógica, derivando en frustración, desconfianza e incumplimiento normativo ante auditorías de seguridad. &
+$\text{Datos de Entrenamiento} \longrightarrow \text{Proceso ML Adaptado} \longrightarrow \text{Modelo Explicable} \longleftrightarrow \text{Interfaz de Explicación}$ \par\vspace{2pt}
+\textit{Resultado:} El analista de seguridad SOC comprende el razonamiento causal, evalúa el contexto del vector de ataque y toma decisiones operativas fundadas. \\
+\bottomrule
+\end{tabularx}
+\caption{Comparación entre el paradigma clásico de IA y la arquitectura XAI expuesta en la conferencia.}
+\label{tab:xai_vs_tradicional}
+\end{figure}
+
+Hinojosa Cárdenas (2026) ilustró la paradoja fundamental de la ciencia de datos contemporánea mediante la gráfica bidimensional de \textbf{Precisión (\textit{Accuracy})} versus \textbf{Explicabilidad (\textit{Explainability})}:
+\begin{itemize}
+    \item \textbf{Máxima precisión, mínima explicabilidad (Zona Opaca):} Redes neuronales profundas (\textit{Deep Learning}, \textit{Neural Networks}) y métodos ensamblados complejos (como \textit{Random Forests} con miles de estimadores). Se comportan como cajas negras difícilmente auditables en tiempo real.
+    \item \textbf{Equilibrio intermedio:} Modelos basados en máquinas de soporte vectorial (SVM), redes de creencias bayesianas (\textit{Bayesian Belief Models}) y modelos ocultos de Márkov.
+    \item \textbf{Máxima explicabilidad, precisión antes moderada (Zona Transparente):} Árboles de decisión discretos y, de forma primordial, los \textbf{Sistemas Basados en Reglas Difusas} (\textit{Fuzzy Rule-Based Systems} - FRBS).
+\end{itemize}
+El desafío científico actual planteado en la conferencia consiste en desplazar el rendimiento de los modelos explicables (\textit{Current Value}) hacia niveles de precisión óptimos (\textit{Desired Value}), preservando intacta su capacidad de ser leídos y comprendidos por el ser humano.
+
+\seccion{FUNDAMENTOS Y ARQUITECTURA DE LA LÓGICA DIFUSA}
+
+\subsection*{Naturaleza de la Lógica Difusa frente a la Lógica Booleana}
+A diferencia de la lógica booleana bivalente clásica fundada en el principio del tercero excluido (donde una proposición únicamente puede evaluarse como verdadera [$1$] o falsa [$0$]), la \textbf{Lógica Difusa} (\textit{Fuzzy Logic}), introducida originalmente por Lotfi Zadeh, modela el razonamiento humano aproximado asignando grados de pertenencia continuos dentro del intervalo cerrado $[0, 1]$.
+
+Durante la disertación se utilizó el ejemplo intuitivo del sensor térmico (pregunta: \textit{``¿Hace frío?''}):
+\begin{itemize}
+    \item \textbf{Lógica Booleana / Nítida (\textit{Crisp}):} Segmenta el mundo en dos estados discretos irreconciliables: $\text{Sí} = 1$ o $\text{No} = 0$.
+    \item \textbf{Lógica Difusa:} Modela el gradiente de la realidad mediante múltiples términos lingüísticos y grados cuantitativos de membresía: ``Mucho frío'' ($\mu = 0.90$), ``Poco frío'' ($\mu = 0.25$) o ``Muy poco frío'' ($\mu = 0.10$).
+\end{itemize}
+
+\subsection*{Estructura de un Sistema Difuso Basado en Reglas (FRBS)}
+La arquitectura estándar de un FRBS se articula a través de cuatro etapas canónicas interconectadas:
+\begin{enumerate}
+    \item \textbf{Interfaz de Fuzzificación (\textit{Fuzzification Interface}):} Toma las entradas numéricas exactas o nítidas ($x \in \mathbb{R}$) provenientes de telemetría de red y las transforma en grados de membresía lingüística $\mu_A(x) \in [0, 1]$ mediante funciones de pertenencia (triangulares, trapezoidales, gaussianas).
+    \item \textbf{Base de Conocimiento (\textit{Knowledge Base}):} Integra dos componentes indispensables:
+    \begin{itemize}
+        \item \textbf{Base de Datos (\textit{Data Base}):} Contiene las parametrizaciones geométricas, universos de discurso y particiones difusas de cada variable de entrada y salida.
+        \item \textbf{Base de Reglas (\textit{Rule Base}):} Almacena colecciones de proposiciones lógicas estructuradas bajo la sintaxis:
+        \begin{equation}
+            \textbf{IF } x_1 \text{ is } A_i \textbf{ AND } x_2 \text{ is } B_j \textbf{ THEN } y \text{ is } C_k
+        \end{equation}
+    \end{itemize}
+    \item \textbf{Motor de Inferencia Difusa (\textit{Fuzzy Inference Engine}):} Evalúa y activa en paralelo las reglas concurrentes aplicando operadores difusos (T-normas para la conjunción AND, generalmente el operador Mínimo; y T-conormas para la disyunción OR, habitualmente el Máximo). Modela la implicación difusa (comúnmente método de Mandani mediante recorte de área con $\min$).
+    \item \textbf{Interfaz de Defusificación (\textit{Defuzzification Interface}):} Agrega las superficies o figuras geométricas de salida resultantes y sintetiza un valor numérico nítido final utilizable por el sistema receptor. El método estándar de referencia es el \textbf{Centroide o Centro de Gravedad (CoG)}, formalizado matemáticamente como:
+    \begin{equation}
+        z^* = \frac{\int z \cdot \mu_C(z) \, dz}{\int \mu_C(z) \, dz} \quad \text{o en forma discreta:} \quad z^* = \frac{\sum_{i=1}^m z_i \cdot \mu_C(z_i)}{\sum_{i=1}^m \mu_C(z_i)}
+    \end{equation}
+\end{enumerate}
+
+Para ejemplificar este flujo, el expositor ilustró el sistema clásico \textit{``Dinner for Two''} (con dos entradas: Calidad del Servicio y Calidad de la Comida [$0-10$], evaluadas bajo tres reglas difusas para calcular la Propina [$5\%-25\%$]), demostrando la suavidad y robustez del modelado no lineal continuo frente a entradas que fluctúan.
+
+\subsection*{Campos de Aplicación en Inteligencia Computacional}
+Hinojosa Cárdenas (2026) contextualizó que la lógica difusa no se restringe a un nicho matemático aislado, sino que conforma uno de los pilares más prolíficos de la Inteligencia Computacional con aplicaciones industriales comprobadas en:
+\begin{enumerate}
+    \item Reconocimiento de patrones y procesamiento digital de imágenes biomédicas.
+    \item Sistemas de diagnóstico médico inteligente y monitorización de enfermedades crónicas.
+    \item Control aeroespacial, estabilización de satélites y regulación del flujo de combustible y oxígeno en turbinas.
+    \item Teoría de control automático, sistemas de soporte para la toma de decisiones (DSS) y arquitecturas de seguridad informática.
+    \item Control inteligente de tráfico vehicular, autopistas autónomas y optimización de redes ferroviarias.
+    \item Transferencia y clasificación bancaria, predicción bursátil de índices financieros y gestión automatizada de fondos de inversión.
+\end{enumerate}
+
+\subsection*{Mecanismos de Generación de Sistemas Difusos}
+Durante la ponencia se analizaron las tres grandes vertientes metodológicas para la construcción y parametrización de sistemas difusos:
+\begin{itemize}
+    \item \textbf{Generación Manual (Sistemas Expertos Clásicos):} Diseñada a partir de la heurística y juicio cognitivo de expertos humanos. Si bien garantiza trazabilidad inmediata, presenta graves limitaciones de escalabilidad y susceptibilidad a sesgos subjetivos ante la dinámica de ciberataques de día cero.
+    \item \textbf{Sistemas Difusos Evolutivos (\textit{Evolutionary Fuzzy Systems}):} Utilizan algoritmos genéticos y metaheurísticas evolutivas distribuidas en tres ramas principales:
+    \begin{itemize}
+        \item \textit{Evolutionary Learning:} Selección evolutiva de reglas, aprendizaje autónomo de bases de datos difusas y aprendizaje simultáneo integral de la base de conocimiento.
+        \item \textit{Evolutionary Tuning:} Ajuste fino de parámetros de funciones de pertenencia y calibración adaptativa del motor de inferencia.
+        \item \textit{Objectives Trade-off:} Optimización multiobjetivo resolviendo el compromiso analítico entre desempeño predictivo (\textit{performance}) e interpretabilidad lingüística (\textit{interpretability}).
+    \end{itemize}
+    \item \textbf{Hibridación Neuro-Difusa (\textit{Deep Neuro-Fuzzy Systems}):} Combina la capacidad de aproximación universal y extracción no lineal de características de las redes neuronales profundas con la interpretabilidad de la lógica difusa. Se distinguen dos esquemas fundamentales:
+    \begin{itemize}
+        \item \textit{Arquitectura (a):} Las entradas se fuzzifican, se procesan mediante capas neuronales profundas con propagación del error cuadrático $(y - \hat{y})^2$ y se defusifican a la salida.
+        \item \textit{Arquitectura (b):} Las redes profundas actúan como extractoras de características de alto nivel que alimentan directamente un motor de inferencia guiado por una base de reglas comprensibles, retroalimentando el algoritmo de optimización con el gradiente del error.
+    \end{itemize}
+\end{itemize}
+
+\seccion{ANÁLISIS COMPARATIVO DE LOS TRES CASOS DE ESTUDIO}
+
+Hinojosa Cárdenas (2026) fundamentó su exposición examinando con minucioso detalle tres investigaciones representativas de la literatura científica internacional, demostrando la versatilidad de los sistemas difusos en diversas etapas del ciclo de vida de la ciberseguridad.
+
+% ------------------------------------------------------------------------------
+\subsection*{Caso de Estudio 1: Sistema de Ciberseguridad Basado en Lógica Difusa}
+% ------------------------------------------------------------------------------
+\noindent\textbf{Referente analizado por el ponente:} Mynuddin et al. (2023), presentado en la conferencia internacional \textit{ICECCME 2023}.
+
+\textbf{Objetivo y Enfoque:} Diseñar un sistema de inferencia difusa tipo Mamdani concebido como un Sistema de Soporte a la Decisión (\textit{Decision Support System} - DSS) para la detección y graduación del nivel de riesgo ante intrusiones, alertando proactivamente a los administradores de red.
+
+\textbf{Estructura de Variables:}
+\begin{itemize}
+    \item \textbf{Variables de Entrada (3):}
+    \begin{enumerate}
+        \item \textit{Cyber Attacker's Technique (\texttt{Cyber\_Tech}):} Técnica de explotación empleada. Categorizada lingüísticamente en: \texttt{VL} (Network Attack), \texttt{L} (Denial of Service), \texttt{M} (Email Virus), \texttt{H} (Trojan Attack) y \texttt{VH} (Malware).
+        \item \textit{Purpose Cyber Attacker's Target (\texttt{P\_Cyber\_A}):} Propósito u objetivo táctico del atacante: \texttt{L} (Out of Service), \texttt{M} (Seizing Webpage), \texttt{H} (Control of the System) y \texttt{VH} (Capture Confidential Information).
+        \item \textit{Cyber Attacker's Target (\texttt{Cyber\_A\_T}):} Activo objetivo impactado: \texttt{L} (Telecommunication), \texttt{M} (Transportation System), \texttt{H} (Emergency Service) y \texttt{VH} (Information Technology).
+    \end{enumerate}
+    \item \textbf{Variables de Salida (3):} Niveles de alerta desagregados para componentes físicos (\texttt{Hardware}), lógicos (\texttt{Software}) y del factor humano (\texttt{User}), escalados en los rangos lingüísticos Bajo (\texttt{L}), Medio (\texttt{M}) y Alto (\texttt{H}).
+    \item \textbf{Base de Conocimiento:} Formulada a través de un cuerpo de \textbf{16 reglas de inferencia difusa Mamdani} que relacionan las técnicas adversarias con los vectores de afectación.
+\end{itemize}
+
+\textbf{Simulación Numérica en MATLAB:} El autor de la ponencia expuso la validación del modelo mediante el visor de reglas (\textit{Rule Viewer}) de MATLAB Fuzzy Logic Toolbox. Ante un escenario empírico con entradas configuradas en:
+\begin{equation*}
+    \texttt{Cyber\_Tech} = 0.297, \quad \texttt{P\_Cyber\_A} = 0.500, \quad \texttt{Cyber\_A\_T} = 0.500
+\end{equation*}
+el motor difuso ejecutó la composición e interpolación de las reglas activadas, produciendo salidas defusificadas equivalentes a:
+\begin{equation*}
+    \text{Nivel de Alerta Hardware} = 0.602, \quad \text{Software} = 0.500, \quad \text{User} = 0.626
+\end{equation*}
+\textbf{Conclusión Clave del Ponente:} La lógica difusa modela con alta fidelidad la incertidumbre inherente a los vectores de intrusión. Se enfatizó enfáticamente que este modelo \textbf{no bloquea ni mitiga de forma autónoma} los ataques, sino que orienta de manera graduada la priorización y toma de decisiones operativas de los administradores de sistemas.
+
+% ------------------------------------------------------------------------------
+\subsection*{Caso de Estudio 2: Toma de Decisiones y Análisis Post-Incidente de Ciberseguridad}
+% ------------------------------------------------------------------------------
+\noindent\textbf{Referente analizado por el ponente:} Slavyanov y Dimov (2024), publicado en las actas de la \textit{15th International Scientific and Practical Conference}.
+
+\textbf{Objetivo y Enfoque:} Desarrollar un sistema de inferencia difusa denominado \textbf{Cyber-FIS2} focalizado en la fase posterior a la detección del ciberincidente (\textit{post-incident decision making}), estructurando y acelerando los Procedimientos Operativos Estandarizados (SOP) para mitigar el impacto y reducir la subjetividad humana.
+
+\textbf{Estructura de Variables y Modelado:}
+\begin{itemize}
+    \item \textbf{Variables de Entrada (3):} Modeladas mediante funciones de pertenencia gaussianas de dos parámetros (\texttt{gauss2mf}) en el universo de discurso $[0, 11]$:
+    \begin{enumerate}
+        \item \textit{Cyber-Attacks:} Compuesta por 11 modalidades: Man-in-the-Middle (MitM), DoS/DDoS, Phishing, Hack Device, Password Attack, SQL Injection, Cross-Site Scripting (XSS), Zero-Day (0-Day), Malware, Buffer Overflow y Public Service.
+        \item \textit{Attack Target:} 9 sectores estratégicos: Comunicaciones, Energía/Servicios Públicos, Negocios, Salud/Médico, Banca/Finanzas, Gobierno, Militar/Policial, Educación y Transporte.
+        \item \textit{Aim of Attack:} 5 intenciones hostiles: Exfiltración de datos, Reconocimiento, Ransomware, Fallo catastrófico de sistema y Pruebas de penetración no autorizadas.
+    \end{enumerate}
+    \item \textbf{Variables de Salida (4 Dimensiones Operativas):}
+    \begin{enumerate}
+        \item \textit{Hardware Actions:} Control físico, Sistemas dedicados/DMZ, Soporte técnico especializado y Aislamiento total del sistema.
+        \item \textit{Software Actions:} Despliegue de software especializado, Reconfiguración de Firewall de red/WAF, Reconfiguración del SIEM, Actualización de sistemas, Ejecución de SOP específico y Restauración mediante copias de respaldo (\textit{Backup/Restore}).
+        \item \textit{User Actions:} Entrenamiento correctivo a usuarios finales, Incremento de concientización situacional y Actualización de políticas de control de cuentas.
+        \item \textit{Cyber Intruder's Profile:} Clasificación del adversario en 5 perfiles: \textit{Insider} (amenaza interna), \textit{Black Hat Hacker}, \textit{Purple Hat Hacker}, \textit{Ethical Hacker} o Ciberactivista.
+    \end{enumerate}
+    \item \textbf{Base de Conocimiento:} Articulada mediante \textbf{184 reglas difusas} exhaustivas que orquestan las contramedidas inmediatas.
+\end{itemize}
+
+\textbf{Conclusión Clave del Ponente:} El sistema fue validado en un escenario real de ataque de \textit{phishing} contra dependencias militares y policiales, comprobándose que la inferencia difusa estandariza la respuesta técnica de contención, disminuye la latencia en la ejecución de SOP y neutraliza la dispersión de criterios provocada por el estrés del operador humano.
+
+% ------------------------------------------------------------------------------
+\subsection*{Caso de Estudio 3: Detección Inteligente de Ciberamenazas Mediante Reglas de Producción Difusas}
+% ------------------------------------------------------------------------------
+\noindent\textbf{Referente analizado por el ponente:} Kostiuk et al. (2026), publicado en las actas de la conferencia internacional \textit{CMIGIN 2026} (CEUR Workshop Proceedings, Vol. 4281).
+
+\textbf{Objetivo y Enfoque:} Resolver la detección inteligente de ciberamenazas en redes corporativas caracterizadas por \textbf{datos imperfectos}, integrando reglas de producción difusas y métricas avanzadas de similitud que otorguen interpretabilidad intrínseca a la decisión algorítmica.
+
+\textbf{Tratamiento de la Imperfección de Datos en Redes:}
+\begin{itemize}
+    \item \textbf{Datos Incompletos:} Conexiones de red con campos truncados o no registrados (duración, número de paquetes, volumen transferido o protocolos no categorizados).
+    \item \textbf{Datos Imprecisos:} Lecturas con márgenes continuos de variación donde los umbrales numéricos rígidos generan falsos positivos (por ejemplo, definir cuándo un volumen de tráfico es ``alto'').
+    \item \textbf{Datos Inciertos:} Conexiones fronterizas con firmas anómalas que comparten propiedades comunes con el tráfico operativo ordinario.
+\end{itemize}
+
+\textbf{Arquitectura Algorítmica y Métrica de Similitud:}
+El flujo de procesamiento captura paquetes en tiempo real mediante un monitor de tráfico (\textit{Packet Sniffer}), extrae un vector de características nítidas, las somete a fuzzificación y calcula el grado de similitud con situaciones de ataque conocidas empleando la \textbf{Distancia de Hamming Modificada Ponderada}:
+\begin{equation}
+    D(S_i, S_j) = \sum_{k=1}^n w_k \cdot \left| a_k - b_k \right|
+\end{equation}
+donde $w_k$ representa el coeficiente de ponderación asignado a la $k$-ésima característica lingüística, $a_k$ es el valor difuso del evento bajo análisis y $b_k$ corresponde al patrón arquetípico almacenado en la base de conocimiento. Tras evaluar las reglas de producción, el motor ejecuta la defusificación (mediante el método del centroide o máxima pertenencia) e interactúa con el analista de ciberamenazas (\textit{Threat Analyst}) para retroalimentar y actualizar la base de reglas en caso de discrepancias operacionales.
+
+\textbf{Vector Lingüístico de Detección de Amenazas:}
+La Tabla~\ref{tab:variables_caso3} resume las nueve variables lingüísticas implementadas en el modelo expuesto:
+
+\begin{table}[H]
+\centering
+\caption{Correspondencia entre características de tráfico y variables lingüísticas (Kostiuk et al., 2026).}
+\label{tab:variables_caso3}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{c p{4.2cm} c p{2.8cm} p{2.4cm}}
+\toprule
+\textbf{\#} & \textbf{Característica de Red} & \textbf{Tipo de Dato} & \textbf{Variable Lingüística} & \textbf{Términos Difusos} \\
+\midrule
+1 & Conexiones entrantes por segundo & Entero & Intensidad de tráfico & Bajo, Medio, Alto \\
+2 & Conexiones a un único host & Entero & Actividad sospechosa & Normal, Anómala \\
+3 & Direcciones IP únicas observadas & Entero & Distribución tráfico & Localizada, Distribuida \\
+4 & Frecuencia temporal de peticiones & Real & Frecuencia eventos & Rara, Frecuente, Muy frec. \\
+5 & Volumen transferido (KB) & Real & Volumen de tráfico & Pequeño, Moderado, Grande \\
+6 & Presencia de comandos anómalos & Lógico & Signos de ataque & Ausente, Presente \\
+7 & Repetición de patrones en logs & Real $[0,1]$ & Estabilidad conductual & Estable, Fluctuante, Caótico \\
+8 & Identificación origen/destino & Categórico & Tipo de conexión & Legítima, Sospechosa, Desc. \\
+9 & Protocolo de transporte & Categórico & Protocolo de red & TCP, UDP, ICMP, Otro \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Reglas de Producción Representativas:}
+\begin{itemize}
+    \item \textbf{Regla 1 (DDoS):} \texttt{IF} Intensidad = Alta \texttt{AND} Conexiones a Host = Anómala \texttt{AND} Distribución = Distribuida $\longrightarrow$ \texttt{THEN} Tipo de Ataque = DDoS [Nivel de Amenaza: Alto].
+    \item \textbf{Regla 2 (Phishing):} \texttt{IF} Contiene Link = True \texttt{AND} Autenticación Remitente = False \texttt{AND} Clic Usuario = True $\longrightarrow$ \texttt{THEN} Tipo de Ataque = Phishing [Nivel de Amenaza: Alto].
+    \item \textbf{Regla 3 (UDP Flood):} \texttt{IF} Protocolo = UDP \texttt{AND} IPs Únicas $> 30$ \texttt{AND} Frecuencia Peticiones = Muy Frecuente $\longrightarrow$ \texttt{THEN} Tipo = UDP Flood [Nivel de Amenaza: Alto].
+    \item \textbf{Regla 4 (Actividad Normal):} \texttt{IF} Volumen = Moderado \texttt{AND} Frecuencia = Rara \texttt{AND} Conexión = Legítima $\longrightarrow$ \texttt{THEN} Situación = Normal [Nivel de Amenaza: Bajo].
+    \item \textbf{Regla 5 (Amenaza Interna):} \texttt{IF} Conexiones $> 50$ \texttt{AND} Estabilidad = Caótica \texttt{AND} Conexión = Sospechosa $\longrightarrow$ \texttt{THEN} Tipo = Ataque Interno [Nivel de Amenaza: Medio].
+\end{itemize}
+
+\seccion{EVALUACIÓN EXPERIMENTAL Y RENDIMIENTO COMPARATIVO}
+
+Para validar empíricamente la efectividad del sistema difuso basado en reglas de producción frente a herramientas consolidadas de la industria, el estudio analizado por Hinojosa Cárdenas (2026) empleó el repositorio de datos abierto \textbf{CICIDS-2017} (\textit{Canadian Institute for Cybersecurity IDS Dataset}), considerado uno de los patrones de referencia más rigurosos a nivel global debido a que reúne capturas de tráfico benigno entrelazado con vectores avanzados de denegación de servicio, ataques de fuerza bruta, escaneos de vulnerabilidades e infiltración.
+
+El modelo propuesto fue sometido a una prueba comparativa directa contra dos de las arquitecturas de detección de intrusiones de red de código abierto más desplegadas en entornos de producción:
+\begin{itemize}
+    \item \textbf{Snort:} Motor de detección y prevención de intrusiones (IDS/IPS) basado fundamentalmente en inspección de firmas y reglas estáticas de concordancia de patrones binarios.
+    \item \textbf{Zeek (antiguo Bro):} Plataforma de monitoreo y análisis de tráfico orientada a la extracción de eventos contextuales y telemetría de protocolos.
+\end{itemize}
+
+Los resultados cuantitativos obtenidos sobre el dataset CICIDS-2017 se sintetizan en la Tabla~\ref{tab:benchmarking_ids}:
+
+\begin{table}[H]
+\centering
+\caption{Evaluación comparativa de rendimiento entre sistemas IDS (Hinojosa Cárdenas, 2026; Kostiuk et al., 2026).}
+\label{tab:benchmarking_ids}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{0.92\textwidth}{>{\centering\arraybackslash}X >{\centering\arraybackslash}m{3.2cm} >{\centering\arraybackslash}m{3.2cm} >{\centering\arraybackslash}m{3.0cm}}
+\toprule
+\textbf{Sistema IDS Evaluado} & \textbf{Exactitud (\textit{Accuracy})} & \textbf{Puntuación F1 (\textit{F1-score})} & \textbf{Latencia (\textit{Latency})} \\
+\midrule
+\textbf{Snort} & $88.4\,\%$ & $85.1\,\%$ & $85\text{ ms}$ \\
+\textbf{Zeek} & $91.2\,\%$ & $89.5\,\%$ & $62\text{ ms}$ \\
+\textbf{Modelo Difuso Propuesto} & $\mathbf{96.2\,\%}$ & $\mathbf{94.8\,\%}$ & $\mathbf{28\text{ ms}}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{Interpretación de Métricas Clave y Ventaja Competitiva}
+El análisis cuantitativo revela ventajas críticas del modelo difuso:
+\begin{enumerate}
+    \item \textbf{Superioridad en Exactitud y F1-Score:} El modelo difuso alcanza una exactitud del $96.2\%$ y un puntaje balanceado F1 del $94.8\%$, superando a Snort por $7.8\%$ en precisión y a Zeek por $5.0\%$. Esta mejora radica en su habilidad para discriminar anomalías sutiles en zonas grises de la distribución del tráfico, reduciendo sustancialmente la tasa de falsos positivos y falsos negativos que típicamente aquejan a las firmas rígidas.
+    \item \textbf{Drástica Reducción de la Latencia Operativa:} Con una latencia de apenas $28\text{ ms}$, el modelo difuso procesa el flujo de paquetes más de \textbf{tres veces más rápido} que Snort ($85\text{ ms}$) y \textbf{más del doble de rápido} que Zeek ($62\text{ ms}$). Esta eficiencia se debe a que la evaluación matricial de reglas de pertenencia y el cálculo de la distancia de Hamming modificada son operaciones altamente vectorizables y computacionalmente ligeras frente al análisis de expresiones regulares de cadenas profundas.
+    \item \textbf{Alineación con Big Data en Tiempo Real:} En canales de comunicaciones de alta velocidad (10 Gbps a 100 Gbps), una latencia inferior a $30\text{ ms}$ evita el desbordamiento de búferes en conmutadores y enrutadores, habilitando la inspección continua de flujos masivos de paquetes sin degradar la calidad de servicio (\textit{QoS}).
+\end{enumerate}
+
+\seccion{SÍNTESIS DE LOS CASOS Y APLICABILIDAD EN ENTORNOS BIG DATA}
+
+A partir de la exposición del Dr. Edward Hinojosa Cárdenas, es posible establecer una matriz comparativa transversal que unifica los tres modelos estudiados, evidenciando cómo la lógica difusa cubre las distintas etapas del ciclo cibernético de mitigación:
+
+\begin{table}[H]
+\centering
+\caption{Matriz sintética comparativa de los tres casos de estudio analizados en la conferencia.}
+\label{tab:matriz_casos}
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{p{2.3cm} p{3.4cm} p{2.2cm} p{2.2cm} X}
+\toprule
+\textbf{Caso de Estudio} & \textbf{Variables de Entrada} & \textbf{Motor / Reglas} & \textbf{Variables de Salida} & \textbf{Rol Primordial en Seguridad} \\
+\midrule
+\textbf{Caso 1: Mynuddin et al. (2023)} &
+3 (Técnica del atacante, Propósito, Activo objetivo) &
+Mamdani \newline 16 reglas &
+3 (Niveles de alerta para HW, SW, Usuario) &
+Sistema de soporte a la decisión (DSS) previo para priorización de alertas. \\
+\midrule
+\textbf{Caso 2: Slavyanov y Dimov (2024)} &
+3 (Tipo de ciberataque [11], Objetivo [9], Propósito [5]) &
+Mamdani (Cyber-FIS2) \newline 184 reglas &
+4 (Acciones HW, Acciones SW, Acciones Usuario, Perfil Intruso) &
+Orquestación de respuesta post-incidente y automatización de SOP militares/policiales. \\
+\midrule
+\textbf{Caso 3: Kostiuk et al. (2026)} &
+9 (Telemetría de red: intensidad, puertos, entropía, etc.) &
+Reglas de producción + Dist. Hamming &
+Tipo de amenaza, Nivel de riesgo, Reacción &
+Detección en tiempo real ante datos incompletos con baja latencia (28 ms, CICIDS-2017). \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{Relevancia para la Ingeniería de Big Data y Centros SOC}
+En las arquitecturas modernas de Big Data y telemetría de eventos de seguridad (SIEM/SOAR), la ingestión masiva de registros produce un fenómeno adverso recurrente: la \textit{fatiga de alertas} provocada por millones de eventos de baja severidad y falsas alarmas que saturan a los analistas de los Centros de Operaciones de Seguridad (SOC). 
+
+La lógica difusa proporciona a los ingenieros de sistemas una herramienta rigurosa para estructurar motores analíticos capaces de ingerir flujos distribuidos en tiempo real (por ejemplo, alimentados mediante clústeres de Apache Kafka y procesados en motores como Apache Spark o Flink), asignando ponderaciones graduales a la evidencia observada. Adicionalmente, al garantizar que cada alerta esté respaldada por una regla lingüística clara (p. ej., ``Si la intensidad de tráfico es alta y la distribución es distribuida''), las organizaciones logran certificar el cumplimiento pleno de las auditorías de transparencia exigidas por la Ley N° 31814 en el Perú y el AI Act en la Unión Europea.
+
+\seccion{CONCLUSIONES}
+
+\begin{enumerate}
+    \item \textbf{Superación del paradigma binario en la evaluación de ciberamenazas:} La conferencia magistral del Dr. Edward Hinojosa Cárdenas en JINIS 2026 demostró que la ciberseguridad contemporánea no puede gestionarse de forma óptima mediante criterios booleanos deterministas. La naturaleza de los ciberataques actuales se desenvuelve en escenarios de datos incompletos, vagos y ambiguos, donde la lógica difusa aporta un andamiaje formal idóneo para cuantificar la incertidumbre sin recurrir a suposiciones arbitrarias.
+    \item \textbf{Cumplimiento riguroso de los mandatos normativos mediante XAI:} Frente a las exigencias jurídicas del Reglamento de IA de la Unión Europea (AI Act 2024/1689, artículos 13 y 86) y la legislación peruana (Ley N° 31814 y su Reglamento D.S. N° 115-2025-PCM), los sistemas basados en reglas difusas (FRBS) se posicionan como una alternativa de primer orden frente a las redes neuronales de caja negra, permitiendo auditar, interpretar y justificar técnicamente cada decisión ante operadores humanos y organismos reguladores.
+    \item \textbf{Eficacia demostrada en el ciclo integral de respuesta a incidentes:} La revisión de los tres casos de estudio confirmó la aplicabilidad de los sistemas difusos en todas las facetas de la ciberdefensa: desde la graduación preliminar de alertas orientada a administradores (Mynuddin et al.), pasando por la estructuración de respuestas post-incidente y aceleración de SOP en infraestructuras militares (Slavyanov y Dimov), hasta la detección autónoma de intrusiones en tiempo real con datos ruidosos (Kostiuk et al.).
+    \item \textbf{Rendimiento empírico de vanguardia y baja latencia en entornos masivos:} Los resultados cuantitativos sobre el dataset estándar CICIDS-2017 ratifican que los sistemas de producción difusos no sacrifican rendimiento por explicabilidad: con un $96.2\%$ de exactitud, un $94.8\%$ de puntuación F1 y una latencia de tan solo $28\text{ ms}$, el modelo propuesto superó ostensiblemente a plataformas canónicas de la industria como Snort y Zeek, consolidándose como una metodología de alto impacto para la ingeniería de Big Data y la analítica de seguridad en tiempo real.
+\end{enumerate}
+
+% ------------------------------------------------------------------------------
+% 5. REFERENCIAS (Formato APA 7ma Edición - Referido Exclusivamente al Congreso)
+% ------------------------------------------------------------------------------
+\seccionref
+
+\noindent
+\hangindent=1.27cm\hangafter=1
+Hinojosa Cárdenas, E. (2026, 18--20 de noviembre). \textit{Lógica difusa y ciberseguridad} [Conferencia magistral]. XXXIII Jornadas Internacionales de Ingeniería de Sistemas (JINIS 2026), Universidad Católica de Santa María, Arequipa, Perú.
+
+\end{document}
