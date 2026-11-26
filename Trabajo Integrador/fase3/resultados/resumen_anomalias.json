@@ -1,0 +1,12 @@
+{
+  "filas": 136059,
+  "anomalias": 3635,
+  "pct_anomalias": 2.67,
+  "calidas": 2353,
+  "frias": 1282,
+  "por_dominio": {
+    "Continental_Peru": 2984,
+    "Pacific_Ocean": 651
+  },
+  "dia_con_mas_anomalias": 28
+}

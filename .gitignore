@@ -17,4 +17,10 @@ WiredTiger.wt
 
 # Archivos ERA5 pesados
 Trabajo Integrador/era5_peru_202001.nc
-Trabajo Integrador/era5_data/*.nc
+Trabajo Integrador/era5_data/*.nc__pycache__/
+*.pyc
+*.nc
+*.zip
+**/era5_data/
+**/resultados*/era5_obs.csv
+**/resultados*/log_hadoop.txt

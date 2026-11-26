@@ -1,0 +1,11 @@
+day,latitude,longitude,domain,temp_mean,precip_total_mm,temp_base,temp_std,z,is_anomaly,tipo
+9,-0.5,-78.25,Continental_Peru,6.6,0.07,8.84,0.579,-3.868,True,fria
+9,-0.25,-78.25,Continental_Peru,8.28,0.119,10.42,0.585,-3.65,True,fria
+28,-9.75,-76.25,Continental_Peru,13.37,5.536,11.41,0.543,3.614,True,calida
+9,-0.5,-78.0,Continental_Peru,9.81,0.013,12.37,0.715,-3.577,True,fria
+28,-9.5,-76.25,Continental_Peru,16.29,14.383,14.38,0.542,3.522,True,calida
+28,-9.5,-76.5,Continental_Peru,11.54,10.472,9.77,0.522,3.39,True,calida
+28,-9.75,-76.0,Continental_Peru,15.47,17.319,13.74,0.513,3.381,True,calida
+5,-16.5,-68.75,Continental_Peru,7.72,31.854,10.84,0.923,-3.38,True,fria
+18,-0.75,-79.0,Continental_Peru,18.0,30.8,16.28,0.521,3.3,True,calida
+16,-14.5,-74.0,Continental_Peru,3.37,15.441,6.72,1.017,-3.298,True,fria

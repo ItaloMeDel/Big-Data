@@ -1,0 +1,15 @@
+{
+  "documentos_observaciones": 3265416,
+  "documentos_climatologia_diaria": 136059,
+  "documentos_regionales": 62,
+  "celdas_catalogo": 4389,
+  "horas": 744,
+  "celdas": 4389,
+  "segundos_ingesta": 46.21,
+  "docs_por_segundo": 70658,
+  "segundos_indices": 36.19,
+  "segundos_agregacion": 8.84,
+  "segundos_total": 92.97,
+  "tamano_coleccion_MB": 1681.9,
+  "tamano_indices_MB": 204.8
+}
