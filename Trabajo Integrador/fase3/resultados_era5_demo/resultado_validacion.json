@@ -1,0 +1,12 @@
+{
+  "observaciones_esperadas": 737352,
+  "observaciones_en_mongodb": 737352,
+  "filas_comparadas": 14,
+  "max_dif_temp_C": 0.0,
+  "max_dif_precip_mm": 0.005,
+  "muestras_coinciden": true,
+  "hadoop_filas": 14,
+  "hadoop_max_dif_temp_C": 0.0,
+  "hadoop_max_dif_precip_mm": 0.005,
+  "VALIDACION_OK": true
+}

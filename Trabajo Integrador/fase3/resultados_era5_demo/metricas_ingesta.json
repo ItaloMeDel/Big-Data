@@ -5,11 +5,11 @@
   "celdas_catalogo": 4389,
   "horas": 168,
   "celdas": 4389,
-  "segundos_ingesta": 12.83,
-  "docs_por_segundo": 57468,
-  "segundos_indices": 8.12,
-  "segundos_agregacion": 2.11,
-  "segundos_total": 24.37,
+  "segundos_ingesta": 12.74,
+  "docs_por_segundo": 57880,
+  "segundos_indices": 7.64,
+  "segundos_agregacion": 2.18,
+  "segundos_total": 23.69,
   "tamano_coleccion_MB": 379.8,
-  "tamano_indices_MB": 45.2
+  "tamano_indices_MB": 45.8
 }
